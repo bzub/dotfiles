@@ -173,13 +173,35 @@ return require('packer').startup({ function(use)
 
   use { "numToStr/FTerm.nvim",
     config = function()
-      require("FTerm").setup({
-        hl = 'DarkTerminal',
-        blend = 2,
-      })
-      map('n', '<A-i>', '<CMD>lua require("FTerm").toggle()<CR>')
-      map('i', '<A-i>', '<CMD>lua require("FTerm").toggle()<CR>')
-      map('t', '<A-i>', '<C-\\><C-n><CMD>lua require("FTerm").toggle()<CR>')
+      local has_key = function(something, key)
+        return something[key] ~= nil
+      end
+      if not has_key(_G, "Bzub")then
+        _G.Bzub = {}
+      end
+      if not has_key(_G.Bzub, "Terms")then
+        _G.Bzub.Terms = {}
+      end
+      if not has_key(_G.Bzub, "fterm")then
+        _G.Bzub.fterm = require("FTerm")
+      end
+
+      _G.Bzub.ToggleTerm = function(name)
+        local term_config = {
+          hl = 'DarkTerminal',
+          blend = 2,
+        }
+
+        if not has_key(_G.Bzub.Terms, name) then
+          _G.Bzub.Terms[name] = _G.Bzub.fterm:new(term_config)
+          _G.Bzub.Terms[name] = _G.Bzub.Terms[name]:setup(term_config)
+        end
+        _G.Bzub.Terms[name] = _G.Bzub.Terms[name]:toggle()
+      end
+
+      map('n', '<A-i>', '<CMD>lua _G.Bzub.ToggleTerm(vim.api.nvim_get_current_tabpage())<CR>')
+      map('i', '<A-i>', '<CMD>lua _G.Bzub.ToggleTerm(vim.api.nvim_get_current_tabpage())<CR>')
+      map('t', '<A-i>', '<C-\\><C-n><CMD>lua _G.Bzub.ToggleTerm(vim.api.nvim_get_current_tabpage())<CR>')
     end,
   }
 
