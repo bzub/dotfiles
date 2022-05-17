@@ -1,4 +1,4 @@
-return require('packer').startup(function(use)
+return require('packer').startup({ function(use)
   use { 'wbthomason/packer.nvim',
     config = function()
       -- Auto run PackerCompile
@@ -177,9 +177,9 @@ return require('packer').startup(function(use)
         hl = 'DarkTerminal',
         blend = 2,
       })
-      vim.keymap.set('n', '<A-i>', '<CMD>lua require("FTerm").toggle()<CR>')
-      vim.keymap.set('i', '<A-i>', '<CMD>lua require("FTerm").toggle()<CR>')
-      vim.keymap.set('t', '<A-i>', '<C-\\><C-n><CMD>lua require("FTerm").toggle()<CR>')
+      map('n', '<A-i>', '<CMD>lua require("FTerm").toggle()<CR>')
+      map('i', '<A-i>', '<CMD>lua require("FTerm").toggle()<CR>')
+      map('t', '<A-i>', '<C-\\><C-n><CMD>lua require("FTerm").toggle()<CR>')
     end,
   }
 
@@ -825,4 +825,10 @@ return require('packer').startup(function(use)
       })
     end
   }
-end)
+end,
+config = {
+  display = {
+    open_fn = require('packer.util').float,
+  },
+},
+})
