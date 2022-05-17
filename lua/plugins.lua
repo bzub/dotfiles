@@ -176,13 +176,13 @@ return require('packer').startup({ function(use)
       local has_key = function(something, key)
         return something[key] ~= nil
       end
-      if not has_key(_G, "Bzub")then
+      if not has_key(_G, "Bzub") then
         _G.Bzub = {}
       end
-      if not has_key(_G.Bzub, "Terms")then
+      if not has_key(_G.Bzub, "Terms") then
         _G.Bzub.Terms = {}
       end
-      if not has_key(_G.Bzub, "fterm")then
+      if not has_key(_G.Bzub, "fterm") then
         _G.Bzub.fterm = require("FTerm")
       end
 
@@ -207,10 +207,7 @@ return require('packer').startup({ function(use)
 
   use { 'kevinhwang91/nvim-bqf', ft = 'qf' }
   use {
-    -- 'pwntester/octo.nvim',
-    -- dev mode
-    '~/ghq/github.com/pwntester/octo.nvim',
-    branch = '276_handle_multiple_hosts',
+    'pwntester/octo.nvim',
     requires = {
       'nvim-lua/plenary.nvim',
       'nvim-telescope/telescope.nvim',
@@ -218,8 +215,6 @@ return require('packer').startup({ function(use)
     },
     config = function()
       require "octo".setup()
-      -- github_hostname = function()
-      -- end
     end
   }
 
