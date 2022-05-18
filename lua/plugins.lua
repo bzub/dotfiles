@@ -39,23 +39,45 @@ return require('packer').startup({ function(use)
     -- end
   }
 
-  use 'jvirtanen/vim-hcl'
+  -- use 'jvirtanen/vim-hcl'
   use { 'nvim-treesitter/nvim-treesitter',
     run = ':TSUpdate',
+    requires = {
+      'nvim-treesitter/nvim-treesitter-refactor',
+    },
     config = function()
-      require('nvim-treesitter').setup({
-        ensure_installed = { "all" },
+      require 'nvim-treesitter.configs'.setup {
+        ensure_installed = "all",
         highlight = { enable = true },
         incremental_selection = { enable = true },
         textobjects = { enable = true },
         indent = { enable = true },
-      })
-
-      -- Folding
-      -- vim.cmd([[
-      --   set foldmethod=expr
-      --   set foldexpr=nvim_treesitter#foldexpr()
-      -- ]])
+        refactor = {
+          highlight_definitions = {
+            enable = true,
+            -- Set to false if you have an `updatetime` of ~100.
+            clear_on_cursor_move = true,
+          },
+          highlight_current_scope = { enable = false },
+          smart_rename = {
+            enable = true,
+            keymaps = {
+              smart_rename = "grr",
+            },
+          },
+          navigation = {
+            enable = true,
+            keymaps = {
+              -- goto_definition = "gnd",
+              goto_definition_lsp_fallback = "gnd",
+              list_definitions = "gnD",
+              list_definitions_toc = "gO",
+              goto_next_usage = "<a-*>",
+              goto_previous_usage = "<a-#>",
+            },
+          },
+        },
+      }
 
       -- Octo support
       local parser_config = require("nvim-treesitter.parsers").get_parser_configs()
