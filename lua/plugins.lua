@@ -286,58 +286,37 @@ return require('packer').startup({ function(use)
       require 'mini.jump2d'.setup()
       require 'mini.misc'.setup()
       require 'mini.pairs'.setup()
-      -- require 'mini.sessions'.setup({
-      --   force = {
-      --     delete = true,
-      --   }
-      -- })
-      -- local starter = require('mini.starter')
-      -- starter.setup({
-      --   items = {
-      --     starter.sections.telescope(),
-      --   },
-      --   content_hooks = {
-      --     starter.gen_hook.adding_bullet(),
-      --     starter.gen_hook.aligning('center', 'center'),
-      --   },
-      -- })
-      -- vim.cmd([[ autocmd TabNewEntered * :lua MiniStarter.open() ]])
       require 'mini.statusline'.setup()
       require 'mini.surround'.setup()
       require 'mini.tabline'.setup()
       require 'mini.trailspace'.setup()
     end
   }
-  -- mini.nvim replaced these:
-  --
-  -- use 'vim-airline/vim-airline'
-  -- use 'vim-airline/vim-airline-themes'
-  -- use { 'gcmt/taboo.vim',
-  --   config = function()
-  --     vim.g.taboo_tab_format = ' [%P] %f%m |'
-  --   end
-  -- }
-  -- use 'godlygeek/tabular'
-  -- use {
-  --   'goolord/alpha-nvim',
-  --   requires = { 'kyazdani42/nvim-web-devicons' },
-  --   config = function()
-  --     require 'alpha'.setup(require 'alpha.themes.startify'.config)
-  --     vim.cmd([[ autocmd TabNewEntered * Alpha ]])
-  --   end
-  -- }
-  -- use 'tpope/vim-surround' -- surround characters shortcuts
-  -- use { 'tversteeg/registers.nvim', keys = { { 'n', '"' }, { 'i', '<c-r>' } } }
 
   use { 'ray-x/navigator.lua',
     requires = { 'ray-x/guihua.lua', run = 'cd lua/fzy && make' },
     config = function()
+      -- local custom_lsp_attach = function(client)
+      --   vim.api.nvim_buf_set_option(0, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
+      --   vim.api.nvim_buf_set_option(0, 'formatexpr', 'v:lua.vim.lsp.formatexpr()')
+      -- end
       require 'navigator'.setup({
+        -- on_attach = custom_lsp_attach,
+        on_attach = function(client)
+          vim.api.nvim_buf_set_option(0, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
+          vim.api.nvim_buf_set_option(0, 'formatexpr', 'v:lua.vim.lsp.formatexpr()')
+        end,
+        treesitter_analysis = true,
         lsp = {
-          disable_lsp = { 'terraform_lsp', 'dockerls' },
+          disable_lsp = {
+            'terraform_lsp',
+            'dockerls',
+          },
           diagnostic = {
             virtual_text = false,
           },
+          code_action = { enable = true, sign = true, sign_priority = 40, virtual_text = false },
+          code_lens_action = { enable = true, sign = true, sign_priority = 40, virtual_text = false },
           yamlls = {
             settings = {
               yaml = {
