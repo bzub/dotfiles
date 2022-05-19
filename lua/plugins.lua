@@ -195,12 +195,28 @@ return require('packer').startup({ function(use)
 
   use { "numToStr/FTerm.nvim",
     config = function()
+      -- TODO: Move this out to be used generally.
       local has_key = function(something, key)
         return something[key] ~= nil
       end
       if not has_key(_G, "Bzub") then
         _G.Bzub = {}
       end
+
+      local term_config = {
+        cmd = "zsh",
+        hl = 'DarkTerminal',
+        blend = 0,
+        on_exit = function(job_id, _, _)
+          for i, _ in ipairs(_G.Bzub.Terms) do
+            if _G.Bzub.Terms[i].job_id_copy == job_id then
+              table.remove(_G.Bzub.Terms, i)
+            end
+          end
+        end,
+      }
+
+      -- Initialize global data
       if not has_key(_G.Bzub, "Terms") then
         _G.Bzub.Terms = {}
       end
@@ -208,22 +224,100 @@ return require('packer').startup({ function(use)
         _G.Bzub.fterm = require("FTerm")
       end
 
-      _G.Bzub.ToggleTerm = function(name)
-        local term_config = {
-          hl = 'DarkTerminal',
-          blend = 2,
-        }
-
-        if not has_key(_G.Bzub.Terms, name) then
-          _G.Bzub.Terms[name] = _G.Bzub.fterm:new(term_config)
-          _G.Bzub.Terms[name] = _G.Bzub.Terms[name]:setup(term_config)
-        end
-        _G.Bzub.Terms[name] = _G.Bzub.Terms[name]:toggle()
+      local new_term = function()
+        local new_idx = table.maxn(_G.Bzub.Terms) + 1
+        local new_term = _G.Bzub.fterm:new(term_config):setup(term_config)
+        new_term.term_idx = new_idx
+        table.insert(_G.Bzub.Terms, new_term)
+        _G.Bzub.CurrentTerm = new_idx
+        return new_idx
       end
 
-      map('n', '<A-i>', '<CMD>lua _G.Bzub.ToggleTerm(vim.api.nvim_get_current_tabpage())<CR>')
-      map('i', '<A-i>', '<CMD>lua _G.Bzub.ToggleTerm(vim.api.nvim_get_current_tabpage())<CR>')
-      map('t', '<A-i>', '<C-\\><C-n><CMD>lua _G.Bzub.ToggleTerm(vim.api.nvim_get_current_tabpage())<CR>')
+      local get_term = function(term_idx)
+        if not has_key(_G.Bzub.Terms, term_idx) then
+          return nil
+        end
+        return _G.Bzub.Terms[term_idx]
+      end
+
+      local current_term_idx = function()
+        if not has_key(_G.Bzub, "CurrentTerm") or get_term(_G.Bzub.CurrentTerm) == nil then
+          new_term()
+        end
+        return _G.Bzub.CurrentTerm
+      end
+
+      local current_term = function()
+        return _G.Bzub.Terms[current_term_idx()]
+      end
+
+      local ensure_job_id_copy = function(term_idx)
+        local term = get_term(term_idx)
+        if term ~= nil and term.terminal ~= nil then
+          term.job_id_copy = term.terminal
+        end
+        return term
+      end
+
+      _G.Bzub.ToggleTerm = function()
+        local term = current_term():toggle()
+        ensure_job_id_copy(term.term_idx)
+        return term
+      end
+
+      local close_all_terms = function()
+        for i, _ in ipairs(_G.Bzub.Terms) do
+          ensure_job_id_copy(i)
+          _G.Bzub.Terms[i]:close()
+        end
+      end
+
+      local open_term = function(term_idx)
+        close_all_terms()
+        _G.Bzub.CurrentTerm = term_idx
+        return get_term(term_idx):open()
+      end
+
+      _G.Bzub.NewTerm = function()
+        return open_term(new_term())
+      end
+
+      _G.Bzub.NextTerm = function()
+        local old_idx = current_term_idx()
+        local new_idx = old_idx + 1
+        if new_idx > table.maxn(_G.Bzub.Terms) then
+          new_idx = 1
+        end
+        open_term(new_idx)
+      end
+
+      _G.Bzub.PreviousTerm = function()
+        local old_idx = current_term_idx()
+        local new_idx = old_idx - 1
+        if new_idx < 1 then
+          new_idx = table.maxn(_G.Bzub.Terms)
+        end
+        open_term(new_idx)
+      end
+
+      map('n', '][', '<CMD>lua _G.Bzub.ToggleTerm(vim.api.nvim_get_current_tabpage())<CR>')
+      -- map('n', '<C-Space>', '<CMD>lua _G.Bzub.ToggleTerm(vim.api.nvim_get_current_tabpage())<CR>')
+      map('i', '][', '<CMD>lua _G.Bzub.ToggleTerm(vim.api.nvim_get_current_tabpage())<CR>')
+      -- map('i', '<C-Space>', '<CMD>lua _G.Bzub.ToggleTerm(vim.api.nvim_get_current_tabpage())<CR>')
+      map('t', '][', '<C-\\><C-n><CMD>lua _G.Bzub.ToggleTerm(vim.api.nvim_get_current_tabpage())<CR>')
+      -- map('t', '<C-Space>', '<C-\\><C-n><CMD>lua _G.Bzub.ToggleTerm(vim.api.nvim_get_current_tabpage())<CR>')
+
+      map('n', '[]', '<CMD>lua _G.Bzub.NewTerm()<CR>')
+      map('i', '[]', '<CMD>lua _G.Bzub.NewTerm()<CR>')
+      map('t', '[]', '<C-\\><C-n><CMD>lua _G.Bzub.NewTerm()<CR>')
+
+      map('n', ']\\', '<CMD>lua _G.Bzub.NextTerm()<CR>')
+      map('i', ']\\', '<CMD>lua _G.Bzub.NextTerm()<CR>')
+      map('t', ']\\', '<C-\\><C-n><CMD>lua _G.Bzub.NextTerm()<CR>')
+
+      map('n', '[\\', '<CMD>lua _G.Bzub.PreviousTerm()<CR>')
+      map('i', '[\\', '<CMD>lua _G.Bzub.PreviousTerm()<CR>')
+      map('t', '[\\', '<C-\\><C-n><CMD>lua _G.Bzub.PreviousTerm()<CR>')
     end,
   }
 
