@@ -112,7 +112,12 @@ return require('packer').startup({ function(use)
 
   -- search
   use 'tpope/vim-eunuch' -- wrappers UNIX commands
-  use 'tpope/vim-commentary'
+
+  use { "ahmedkhalf/project.nvim",
+    config = function()
+      require("project_nvim").setup {}
+    end
+  }
 
   -- telescope
   use {
@@ -122,77 +127,56 @@ return require('packer').startup({ function(use)
       { 'nvim-telescope/telescope-github.nvim' },
       { 'cljoly/telescope-repo.nvim' },
       { 'nvim-telescope/telescope-ghq.nvim' },
+      { 'echasnovski/mini.nvim' },
+      { 'tami5/sqlite.lua' },
+      { 'nvim-telescope/telescope-smart-history.nvim' },
+      { 'nvim-telescope/telescope-frecency.nvim' },
+      { 'ahmedkhalf/project.nvim' },
     },
+
     config = function()
-      -- local file_picker_mappings = {
-      --   n = {
-      --     ["cd"] = function(prompt_bufnr)
-      --       local selection = require("telescope.actions.state").get_selected_entry()
-      --       local dir = vim.fn.fnamemodify(selection.path, ":p:h")
-      --       require("telescope.actions").close(prompt_bufnr)
-      --       -- Depending on what you want put `cd`, `lcd`, `tcd`
-      --       vim.cmd(string.format("silent tcd %s", dir))
-      --     end
-      --   },
-      --   i = {
-      --     ["<M-t>"] = function(prompt_bufnr)
-      --       local selection = require("telescope.actions.state").get_selected_entry()
-      --       local dir = vim.fn.fnamemodify(selection.path, ":p:h")
-      --       require("telescope.actions").close(prompt_bufnr)
-      --       -- Depending on what you want put `cd`, `lcd`, `tcd`
-      --       vim.cmd(string.format("silent tcd %s", dir))
-      --       vim.cmd("term zsh")
-      --     end,
-      --     ["<M-d>"] = function()
-      --       local selection = require("telescope.actions.state").get_selected_entry()
-      --       local dir = vim.fn.fnamemodify(selection.path, ":p:h")
-      --       vim.cmd(string.format("silent tcd %s", dir))
-      --       require("telescope.builtin").git_files()
-      --     end,
-      --   },
-      -- }
-      require 'telescope'.load_extension 'repo'
       require 'telescope'.setup {
         defaults = {
-          generic_sorter = require('mini.fuzzy').get_telescope_sorter
+          file_sorter = require('mini.fuzzy').get_telescope_sorter,
+          generic_sorter = require('mini.fuzzy').get_telescope_sorter,
+          winblend = 0,
+          sorting_strategy = "descending",
+          layout_strategy = "center",
+          path_display = {},
+          mappings = {
+            i = {
+              ["<C-Down>"] = require('telescope.actions').cycle_history_next,
+              ["<C-Up>"] = require('telescope.actions').cycle_history_prev,
+            },
+          },
+          history = {
+            path = '~/.local/share/nvim/databases/telescope_history.sqlite3',
+            limit = 1000,
+          },
+          cache_picker = {
+            num_pickers = 20,
+            limit_entries = 1000,
+          },
+          preview = {
+            hide_on_startup = true,
+          },
         },
-        -- pickers = {
-        --   find_files = {
-        --     mappings = file_picker_mappings
-        --   },
-        --   git_files = {
-        --     mappings = file_picker_mappings
-        --   },
-        -- },
+        builtin = {
+          oldfiles = {
+            only_cwd = true,
+          },
+        },
       }
-      -- require 'telescope'.extensions.repo.list {
-      --   search_dirs = {
-      --     "~/git",
-      --     "~/gists",
-      --   }
-      -- }
+
+      require 'telescope'.load_extension 'ghq'
+      require 'telescope'.load_extension 'repo'
+      require 'telescope'.load_extension 'smart_history'
+      require 'telescope'.load_extension 'frecency'
+      require 'telescope'.load_extension 'projects'
+
+      mapall('<Leader><Space>', ':Telescope<CR>')
     end
   }
-
-  -- use { "akinsho/toggleterm.nvim", tag = 'v1.*', config = function()
-  --   require("toggleterm").setup({
-  --     start_in_insert = false,
-  --   })
-  --
-  --   function _G.set_terminal_keymaps()
-  --     local opts = { noremap = true }
-  --     -- vim.api.nvim_buf_set_keymap(0, 't', '<esc>', [[<C-\><C-n>]], opts)
-  --     vim.api.nvim_buf_set_keymap(0, 't', 'jk', [[<C-\><C-n>]], opts)
-  --     -- vim.api.nvim_buf_set_keymap(0, 't', '<C-h>', [[<C-\><C-n><C-W>h]], opts)
-  --     -- vim.api.nvim_buf_set_keymap(0, 't', '<C-j>', [[<C-\><C-n><C-W>j]], opts)
-  --     -- vim.api.nvim_buf_set_keymap(0, 't', '<C-k>', [[<C-\><C-n><C-W>k]], opts)
-  --     -- vim.api.nvim_buf_set_keymap(0, 't', '<C-l>', [[<C-\><C-n><C-W>l]], opts)
-  --   end
-  --
-  --   -- vim.cmd('autocmd! TermOpen term://* lua set_terminal_keymaps()')
-  --   -- if you only want these mappings for toggle term use term://*toggleterm#* instead
-  --   vim.cmd('autocmd! TermOpen term://*toggleterm#* lua set_terminal_keymaps()')
-  -- end }
 
   use { "numToStr/FTerm.nvim",
     config = function()
