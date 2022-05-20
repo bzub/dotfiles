@@ -23,3 +23,11 @@ end
 function tmap(shortcut, command)
   map('t', shortcut, command)
 end
+
+function mapall(shortcut, command)
+  nmap(shortcut, command)
+  imap(shortcut, command)
+  vmap(shortcut, command)
+  cmap(shortcut, command)
+  tmap(shortcut, '<C-\\><C-n>' .. command)
+end
