@@ -41,6 +41,7 @@ return require('packer').startup({ function(use)
 
   -- use 'jvirtanen/vim-hcl'
   use { 'nvim-treesitter/nvim-treesitter',
+    branch = 'master',
     run = ':TSUpdate',
     requires = {
       'nvim-treesitter/nvim-treesitter-refactor',
