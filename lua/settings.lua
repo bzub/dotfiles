@@ -31,17 +31,7 @@ vim.cmd([[
 
 vim.o.wrap = false
 vim.o.termguicolors = true
-if (os.getenv('EDITOR_BACKGROUND') ~= nil) then
-  vim.o.background = os.getenv('EDITOR_BACKGROUND')
-else
-  vim.o.background = 'dark'
-end
-if (os.getenv('EDITOR_CONTRAST') ~= nil) then
-  vim.g.gruvbox_material_background = os.getenv('EDITOR_CONTRAST')
-else
-  vim.g.gruvbox_material_background = 'hard'
-end
-vim.cmd('colorscheme gruvbox-material')
+vim.o.background = 'dark'
 vim.o.hidden = true
 vim.o.incsearch = true
 vim.o.hlsearch = true
