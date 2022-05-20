@@ -30,13 +30,22 @@ return require('packer').startup({ function(use)
     end
   }
 
-  -- use 'tpope/vim-fugitive' -- Git commands
+  use { 'sindrets/diffview.nvim', requires = 'nvim-lua/plenary.nvim' }
+
   use { 'TimUntersberger/neogit',
-    cmd = 'Neogit',
-    requires = 'nvim-lua/plenary.nvim',
-    -- config = function()
-    --   require('config.neogit')
-    -- end
+    branch = 'master',
+    requires = {
+      'nvim-lua/plenary.nvim',
+      'sindrets/diffview.nvim',
+    },
+    config = function()
+      require('neogit').setup({
+        disable_commit_confirmation = true,
+        integrations = {
+          diffview = true,
+        },
+      })
+    end
   }
 
   -- use 'jvirtanen/vim-hcl'
