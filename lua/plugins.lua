@@ -48,7 +48,6 @@ return require('packer').startup({ function(use)
     end
   }
 
-  -- use 'jvirtanen/vim-hcl'
   use { 'nvim-treesitter/nvim-treesitter',
     branch = 'master',
     run = ':TSUpdate',
@@ -65,7 +64,6 @@ return require('packer').startup({ function(use)
         refactor = {
           highlight_definitions = {
             enable = true,
-            -- Set to false if you have an `updatetime` of ~100.
             clear_on_cursor_move = true,
           },
           highlight_current_scope = { enable = false },
@@ -78,6 +76,7 @@ return require('packer').startup({ function(use)
           navigation = {
             enable = true,
             keymaps = {
+              -- TODO: need to disable this default keymap?
               -- goto_definition = "gnd",
               goto_definition_lsp_fallback = "gnd",
               list_definitions = "gnD",
@@ -99,8 +98,6 @@ return require('packer').startup({ function(use)
 
   use { 'ray-x/go.nvim',
     config = function()
-      -- vim.cmd([[ autocmd BufWritePre *.go :silent! lua require('go.format').gofmt() ]])
-      -- vim.cmd([[ autocmd BufWritePre (InsertLeave?) <buffer> lua vim.lsp.buf.formatting_sync(nil,500) ]])
       require('go').setup()
     end
   }
@@ -110,7 +107,7 @@ return require('packer').startup({ function(use)
   use 'tpope/vim-sleuth'
   use 'nvim-lua/plenary.nvim'
 
-  use { 'lewis6991/gitsigns.nvim', -- git added/removed in sidebar + inline blame
+  use { 'lewis6991/gitsigns.nvim',
     requires = { 'nvim-lua/plenary.nvim' },
     config = function()
       require('gitsigns').setup({
@@ -119,7 +116,6 @@ return require('packer').startup({ function(use)
     end
   }
 
-  -- search
   use 'tpope/vim-eunuch' -- wrappers UNIX commands
 
   use { "ahmedkhalf/project.nvim",
@@ -295,11 +291,8 @@ return require('packer').startup({ function(use)
       end
 
       map('n', '][', '<CMD>lua _G.Bzub.ToggleTerm(vim.api.nvim_get_current_tabpage())<CR>')
-      -- map('n', '<C-Space>', '<CMD>lua _G.Bzub.ToggleTerm(vim.api.nvim_get_current_tabpage())<CR>')
       map('i', '][', '<CMD>lua _G.Bzub.ToggleTerm(vim.api.nvim_get_current_tabpage())<CR>')
-      -- map('i', '<C-Space>', '<CMD>lua _G.Bzub.ToggleTerm(vim.api.nvim_get_current_tabpage())<CR>')
       map('t', '][', '<C-\\><C-n><CMD>lua _G.Bzub.ToggleTerm(vim.api.nvim_get_current_tabpage())<CR>')
-      -- map('t', '<C-Space>', '<C-\\><C-n><CMD>lua _G.Bzub.ToggleTerm(vim.api.nvim_get_current_tabpage())<CR>')
 
       map('n', '[]', '<CMD>lua _G.Bzub.NewTerm()<CR>')
       map('i', '[]', '<CMD>lua _G.Bzub.NewTerm()<CR>')
@@ -327,37 +320,6 @@ return require('packer').startup({ function(use)
       require "octo".setup()
     end
   }
-
-  -- use { 'kdheepak/tabline.nvim',
-  --   config = function()
-  --     require 'tabline'.setup {
-  --       -- Defaults configuration options
-  --       enable = true,
-  --       options = {
-  --         -- If lualine is installed tabline will use separators configured in lualine by default.
-  --         -- These options can be used to override those settings.
-  --         -- section_separators = { '', '' },
-  --         -- component_separators = { '', '' },
-  --         -- max_bufferline_percent = 66, -- set to nil by default, and it uses vim.o.columns * 2/3
-  --         show_tabs_always = true, -- this shows tabs only when there are more than one tab or if the first tab is named
-  --         -- show_devicons = true, -- this shows devicons in buffer section
-  --         show_bufnr = true, -- this appends [bufnr] to buffer section,
-  --         show_filename_only = true, -- shows base filename only instead of relative path in filename
-  --         -- modified_icon = "+ ", -- change the default modified icon
-  --         -- modified_italic = false, -- set to true by default; this determines whether the filename turns italic if modified
-  --         show_tabs_only = true, -- this shows only tabs instead of tabs + buffers
-  --       }
-  --     }
-  --     --   vim.cmd [[
-  --     --   set guioptions-=e " Use showtabline in gui vim
-  --     --   set sessionoptions+=tabpages,globals " store tabpages and globals in session
-  --     -- ]]
-  --   end,
-  --   requires = {
-  --     -- { 'hoob3rt/lualine.nvim', opt = true },
-  --     { 'kyazdani42/nvim-web-devicons', opt = true },
-  --   }
-  -- }
 
   use { 'echasnovski/mini.nvim',
     branch = 'main',
@@ -401,7 +363,6 @@ return require('packer').startup({ function(use)
       require 'navigator'.setup({
         on_attach = function(client)
           vim.api.nvim_buf_set_option(0, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
-          -- vim.api.nvim_buf_set_option(0, 'formatexpr', 'v:lua.vim.lsp.formatexpr()')
         end,
         treesitter_analysis = true,
         lsp = {
