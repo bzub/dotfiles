@@ -1,10 +1,9 @@
-require('plugins')
 require('settings')
 require('mappings')
+require('plugins')
 require('autocompletion')
--- require('lsp-config')
--- require('navigator').setup({
---   debug = true,
---   lsp = {
---   },
--- })
+vim.cmd([[
+  set termguicolors
+  set background=dark
+  colorscheme gruvbox-material
+]])
