@@ -389,15 +389,10 @@ return require('packer').startup({ function(use)
   use { 'ray-x/navigator.lua',
     requires = { 'ray-x/guihua.lua', run = 'cd lua/fzy && make' },
     config = function()
-      -- local custom_lsp_attach = function(client)
-      --   vim.api.nvim_buf_set_option(0, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
-      --   vim.api.nvim_buf_set_option(0, 'formatexpr', 'v:lua.vim.lsp.formatexpr()')
-      -- end
       require 'navigator'.setup({
-        -- on_attach = custom_lsp_attach,
         on_attach = function(client)
           vim.api.nvim_buf_set_option(0, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
-          vim.api.nvim_buf_set_option(0, 'formatexpr', 'v:lua.vim.lsp.formatexpr()')
+          -- vim.api.nvim_buf_set_option(0, 'formatexpr', 'v:lua.vim.lsp.formatexpr()')
         end,
         treesitter_analysis = true,
         lsp = {
