@@ -351,6 +351,7 @@ return require('packer').startup({ function(use)
   -- }
 
   use { 'echasnovski/mini.nvim',
+    branch = 'main',
     requires = {
       'lewis6991/gitsigns.nvim',
       'kyazdani42/nvim-web-devicons',
@@ -360,14 +361,27 @@ return require('packer').startup({ function(use)
       require 'mini.comment'.setup()
       require 'mini.cursorword'.setup()
       require 'mini.fuzzy'.setup()
-      require 'mini.indentscope'.setup()
+      require 'mini.indentscope'.setup({
+        draw = {
+          delay = 100,
+          animation = require 'mini.indentscope'.gen_animation(
+            'cubicIn',
+            {
+              duration = 500,
+              unit = 'total',
+            }
+          ),
+        },
+      })
       require 'mini.jump'.setup()
       require 'mini.jump2d'.setup()
       require 'mini.misc'.setup()
       require 'mini.pairs'.setup()
       require 'mini.statusline'.setup()
       require 'mini.surround'.setup()
-      require 'mini.tabline'.setup()
+      require 'mini.tabline'.setup({
+        tabpage_section = 'right',
+      })
       require 'mini.trailspace'.setup()
     end
   }
