@@ -1,15 +1,5 @@
 return require('packer').startup({ function(use)
-  use { 'wbthomason/packer.nvim',
-    config = function()
-      -- Auto run PackerCompile
-      vim.cmd([[
-        augroup packer_user_config
-          autocmd!
-          autocmd BufWritePost plugins.lua source <afile> | PackerCompile
-        augroup end
-      ]])
-    end
-  }
+  use { 'wbthomason/packer.nvim' }
 
   use { 'sainnhe/gruvbox-material',
     config = function()
