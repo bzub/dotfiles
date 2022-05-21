@@ -53,6 +53,7 @@ return require('packer').startup({ function(use)
     run = ':TSUpdate',
     requires = {
       'nvim-treesitter/nvim-treesitter-refactor',
+      'nvim-treesitter/nvim-treesitter-context',
     },
     config = function()
       require 'nvim-treesitter.configs'.setup {
@@ -61,6 +62,7 @@ return require('packer').startup({ function(use)
         incremental_selection = { enable = true },
         textobjects = { enable = true },
         indent = { enable = true },
+        context = { enable = true },
         refactor = {
           highlight_definitions = {
             enable = true,
@@ -78,7 +80,7 @@ return require('packer').startup({ function(use)
             keymaps = {
               -- TODO: need to disable this default keymap?
               -- goto_definition = "gnd",
-              goto_definition_lsp_fallback = "gnd",
+              -- goto_definition_lsp_fallback = "gnd",
               list_definitions = "gnD",
               list_definitions_toc = "gO",
               goto_next_usage = "<a-*>",
