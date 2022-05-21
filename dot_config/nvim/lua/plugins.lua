@@ -132,7 +132,6 @@ return require('packer').startup({ function(use)
     requires = {
       { 'nvim-lua/plenary.nvim' },
       { 'nvim-telescope/telescope-github.nvim' },
-      { 'cljoly/telescope-repo.nvim' },
       { 'nvim-telescope/telescope-ghq.nvim' },
       { 'echasnovski/mini.nvim' },
       { 'tami5/sqlite.lua' },
@@ -176,7 +175,6 @@ return require('packer').startup({ function(use)
       }
 
       require 'telescope'.load_extension 'ghq'
-      require 'telescope'.load_extension 'repo'
       require 'telescope'.load_extension 'smart_history'
       require 'telescope'.load_extension 'frecency'
       require 'telescope'.load_extension 'projects'
