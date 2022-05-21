@@ -1,0 +1,39 @@
+import:
+  - ~/ghq/gist.github.com/sainnhe/ad5cbc4f05c4ced83f80e54d9a75d22f/gruvbox-material-alacritty.yml
+window:
+  decorations: none
+  startup_mode: SimpleFullscreen
+scrolling:
+  history: 0
+font:
+  normal:
+    family: SauceCodePro Nerd Font Mono
+  size: 13.0
+draw_bold_text_with_bright_colors: false
+selection:
+  save_to_clipboard: true
+shell:
+  program: /Users/z003vkg/.local/bin/vmux.sh
+alt_send_esc: true
+mouse:
+  hide_when_typing: true
+hints:
+  enabled: []
+mouse_bindings: []
+key_bindings:
+  - key: F
+    mods: Command|Control
+    action: ToggleSimpleFullscreen
+  # - key: Up
+  #   mods: Control
+  #   action: ReceiveChar
+  # - key: Down
+  #   mods: Control
+  #   action: ReceiveChar
+  # - key: Space
+  #   mods: Command
+  #   action: None
+  # - key: Return
+  #   mods: Command
+  #   chars:
+  # #   # action: ReceiveChar

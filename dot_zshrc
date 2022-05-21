@@ -1,0 +1,58 @@
+#!/usr/bin/env zsh
+
+source "${HOME}/.secret-rc.sh"
+source <(antibody init)
+
+# Specify completions we want before the completion module
+antibody bundle zsh-users/zsh-completions
+
+# Specify plugins we want
+antibody bundle belak/zsh-utils path:editor
+antibody bundle belak/zsh-utils path:history
+antibody bundle belak/zsh-utils path:prompt
+antibody bundle belak/zsh-utils path:utility
+antibody bundle belak/zsh-utils path:completion
+
+# # Specify additional external plugins we want
+antibody bundle zsh-users/zsh-syntax-highlighting
+antibody bundle mafredri/zsh-async
+antibody bundle sindresorhus/pure
+
+autoload -U +X bashcompinit && bashcompinit
+
+if [ $commands[kubectl] ]; then
+  source <(kubectl completion zsh)
+fi
+
+if [ $commands[kpt] ]; then
+  source <(kpt completion zsh)
+fi
+
+if [ $commands[talosctl] ]; then
+  source <(talosctl completion zsh)
+fi
+
+if [ -f "/usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/path.zsh.inc" ]; then
+  source '/usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/path.zsh.inc'
+  source '/usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/completion.zsh.inc'
+fi
+
+if [ $commands[fzf] ]; then
+  source /usr/local/opt/fzf/shell/completion.zsh
+  source /usr/local/opt/fzf/shell/key-bindings.zsh
+fi
+
+if [ $commands[gh] ]; then
+  source <(gh completion -s zsh)
+fi
+
+autoload -Uz compinit
+fpath=(~/.zsh/completion $fpath)
+compinit -i
+
+# Set any settings or overrides here
+autoload -U promptinit; promptinit
+prompt pure
+bindkey -v
+
+export KUBECONFIG="${HOME}/.kube/config:${HOME}/.kube/config-base:${HOME}/.kube/config-management"
