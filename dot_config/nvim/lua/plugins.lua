@@ -114,6 +114,9 @@ return require('packer').startup({ function(use)
       { 'nvim-telescope/telescope-smart-history.nvim' },
       { 'nvim-telescope/telescope-frecency.nvim' },
       { 'ahmedkhalf/project.nvim' },
+      { 'nvim-telescope/telescope-ui-select.nvim' },
+      { 'nvim-telescope/telescope-file-browser.nvim' },
+      { 'nvim-telescope/telescope-packer.nvim' },
     },
 
     config = function()
@@ -148,14 +151,35 @@ return require('packer').startup({ function(use)
             only_cwd = true,
           },
         },
+        extensions = {
+          frecency = {
+            default_workspace = 'CWD',
+            ignore_patterns = {
+              '*.git/*',
+              '*.local/share/nvim/site/pack/*',
+              '*/vendor/*',
+            },
+            show_unindexed = false,
+          },
+          ["ui-select"] = {
+            require("telescope.themes").get_dropdown {},
+          },
+        },
       }
 
       require 'telescope'.load_extension 'ghq'
       require 'telescope'.load_extension 'smart_history'
       require 'telescope'.load_extension 'frecency'
       require 'telescope'.load_extension 'projects'
+      require 'telescope'.load_extension 'ui-select'
+      require 'telescope'.load_extension 'file_browser'
+      require 'telescope'.load_extension 'packer'
 
-      mapall('<Leader><Space>', ':Telescope<CR>')
+      mapall('<Leader><Space>', '<Cmd>Telescope<cr>')
+      mapall('<Leader>p', '<Cmd>Telescope projects<cr>')
+      mapall('<Leader>f', '<Cmd>Telescope frecency<cr>')
+      mapall('<Leader>g', '<Cmd>Telescope ghq list<cr>')
+      mapall('<Leader>o', '<Cmd>Telescope oldfiles<cr>')
     end
   }
 
