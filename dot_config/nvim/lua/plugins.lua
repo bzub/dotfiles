@@ -195,12 +195,15 @@ return require('packer').startup({ function(use)
 
       local term_config = {
         cmd = "zsh",
-        hl = 'DarkTerminal',
+        hl = 'NormalHard',
         blend = 0,
         on_exit = function(job_id, _, _)
           for i, _ in ipairs(_G.Bzub.Terms) do
             if _G.Bzub.Terms[i].job_id_copy == job_id then
               table.remove(_G.Bzub.Terms, i)
+              if _G.Bzub.CurrentTerm > table.maxn(_G.Bzub.Terms) then
+                _G.Bzub.CurrentTerm = table.maxn(_G.Bzub.Terms)
+              end
             end
           end
         end,
