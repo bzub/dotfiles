@@ -5,6 +5,7 @@ vim.o.encoding = "utf-8"
 vim.o.completeopt = 'menuone,noinsert,noselect'
 vim.o.history = 1000
 vim.o.scrollback = 1000
+vim.o.foldlevelstart = 999
 
 -- Only show cursorline in the current window and in normal mode.
 vim.cmd([[
@@ -27,8 +28,6 @@ vim.cmd([[
 ]])
 
 vim.o.wrap = false
-vim.o.termguicolors = true
-vim.o.background = 'dark'
 vim.o.hidden = true
 vim.o.incsearch = true
 vim.o.hlsearch = true
@@ -37,7 +36,7 @@ vim.o.smartcase = true
 vim.o.scrolloff = 8
 
 -- Kptfile
-vim.cmd([[ autocmd BufNewFile,BufRead Kptfile set syntax=yaml ]])
+-- vim.cmd([[ autocmd BufNewFile,BufRead Kptfile set syntax=yaml ]])
 vim.cmd([[ autocmd BufNewFile,BufRead Kptfile set ft=yaml ]])
 
 -- Sessions

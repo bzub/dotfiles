@@ -1,24 +1,7 @@
 return require('packer').startup({ function(use)
   use { 'wbthomason/packer.nvim' }
 
-  use { 'sainnhe/gruvbox-material',
-    config = function()
-      vim.cmd([[
-        function! s:gruvbox_material_custom() abort
-          let l:palette = gruvbox_material#get_palette('hard', 'material')
-          call gruvbox_material#highlight('DarkTerminal', l:palette.fg0, l:palette.bg0)
-        endfunction
-        
-        augroup GruvboxMaterialCustom
-          autocmd!
-          autocmd ColorScheme gruvbox-material call s:gruvbox_material_custom()
-        augroup END
-      ]])
-      vim.g.gruvbox_material_background = 'medium'
-      vim.g.gruvbox_material_enable_italic = 1
-      vim.g.gruvbox_material_enable_bold = 1
-    end
-  }
+  use { 'sainnhe/gruvbox-material' }
 
   use { 'sindrets/diffview.nvim', requires = 'nvim-lua/plenary.nvim' }
 
