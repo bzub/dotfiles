@@ -1,7 +1,7 @@
 -- vim.api.
 vim.cmd([[
   function! s:gruvbox_material_custom() abort
-    filetype indent on
+    filetype indent off
     set termguicolors
     set background=dark
     let g:gruvbox_material_better_performance = 1
@@ -37,4 +37,4 @@ require('settings')
 require('mappings')
 require('plugins')
 vim.cmd([[colorscheme gruvbox-material]])
-vim.cmd([[colorscheme gruvbox-material]])
+-- vim.cmd([[colorscheme gruvbox-material]])

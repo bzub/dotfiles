@@ -89,7 +89,49 @@ return require('packer').startup({ function(use)
     requires = { 'nvim-lua/plenary.nvim' },
     config = function()
       require('gitsigns').setup({
-        current_line_blame = false
+        current_line_blame = false,
+        signcolumn         = false, -- Toggle with `:Gitsigns toggle_signs`
+        numhl              = true, -- Toggle with `:Gitsigns toggle_numhl`
+        linehl             = false, -- Toggle with `:Gitsigns toggle_linehl`
+        word_diff          = true, -- Toggle with `:Gitsigns toggle_word_diff`
+        on_attach          = function(bufnr)
+          local gs = package.loaded.gitsigns
+
+          local function map(mode, l, r, opts)
+            opts = opts or {}
+            opts.buffer = bufnr
+            vim.keymap.set(mode, l, r, opts)
+          end
+
+          -- Navigation
+          map('n', ']c', function()
+            if vim.wo.diff then return ']c' end
+            vim.schedule(function() gs.next_hunk() end)
+            return '<Ignore>'
+          end, { expr = true })
+
+          map('n', '[c', function()
+            if vim.wo.diff then return '[c' end
+            vim.schedule(function() gs.prev_hunk() end)
+            return '<Ignore>'
+          end, { expr = true })
+
+          -- Actions
+          map({ 'n', 'v' }, '<leader>hs', ':Gitsigns stage_hunk<CR>')
+          map({ 'n', 'v' }, '<leader>hr', ':Gitsigns reset_hunk<CR>')
+          map('n', '<leader>hS', gs.stage_buffer)
+          map('n', '<leader>hu', gs.undo_stage_hunk)
+          map('n', '<leader>hR', gs.reset_buffer)
+          map('n', '<leader>hp', gs.preview_hunk)
+          map('n', '<leader>hb', function() gs.blame_line { full = true } end)
+          map('n', '<leader>tb', gs.toggle_current_line_blame)
+          map('n', '<leader>hd', gs.diffthis)
+          map('n', '<leader>hD', function() gs.diffthis('~') end)
+          map('n', '<leader>td', gs.toggle_deleted)
+
+          -- Text object
+          map({ 'o', 'x' }, 'ih', ':<C-U>Gitsigns select_hunk<CR>')
+        end
       })
     end
   }
@@ -117,9 +159,12 @@ return require('packer').startup({ function(use)
       { 'nvim-telescope/telescope-ui-select.nvim' },
       { 'nvim-telescope/telescope-file-browser.nvim' },
       { 'nvim-telescope/telescope-packer.nvim' },
+      { 'folke/trouble.nvim' },
     },
 
     config = function()
+      local trouble = require("trouble.providers.telescope")
+
       require 'telescope'.setup {
         defaults = {
           file_sorter = require('mini.fuzzy').get_telescope_sorter,
@@ -132,7 +177,9 @@ return require('packer').startup({ function(use)
             i = {
               ["<C-Down>"] = require('telescope.actions').cycle_history_next,
               ["<C-Up>"] = require('telescope.actions').cycle_history_prev,
+              ["<c-t>"] = trouble.open_with_trouble,
             },
+            n = { ["<c-t>"] = trouble.open_with_trouble },
           },
           history = {
             path = '~/.local/share/nvim/databases/telescope_history.sqlite3',
@@ -143,7 +190,7 @@ return require('packer').startup({ function(use)
             limit_entries = 1000,
           },
           preview = {
-            hide_on_startup = true,
+            hide_on_startup = false,
           },
         },
         builtin = {
@@ -180,6 +227,7 @@ return require('packer').startup({ function(use)
       mapall('<Leader>f', '<Cmd>Telescope frecency<cr>')
       mapall('<Leader>g', '<Cmd>Telescope ghq list<cr>')
       mapall('<Leader>o', '<Cmd>Telescope oldfiles<cr>')
+      mapall('<Leader>o', '<Cmd>Telescope buffers<cr>')
     end
   }
 
@@ -356,6 +404,35 @@ return require('packer').startup({ function(use)
         tabpage_section = 'right',
       })
       require 'mini.trailspace'.setup()
+    end
+  }
+
+  -- Lua
+  use {
+    "folke/trouble.nvim",
+    requires = "kyazdani42/nvim-web-devicons",
+    config = function()
+      require("trouble").setup {}
+
+      -- Keybindings
+      vim.api.nvim_set_keymap("n", "<leader>xx", "<cmd>Trouble<cr>",
+        { silent = true, noremap = true }
+      )
+      vim.api.nvim_set_keymap("n", "<leader>xw", "<cmd>Trouble workspace_diagnostics<cr>",
+        { silent = true, noremap = true }
+      )
+      vim.api.nvim_set_keymap("n", "<leader>xd", "<cmd>Trouble document_diagnostics<cr>",
+        { silent = true, noremap = true }
+      )
+      vim.api.nvim_set_keymap("n", "<leader>xl", "<cmd>Trouble loclist<cr>",
+        { silent = true, noremap = true }
+      )
+      vim.api.nvim_set_keymap("n", "<leader>xq", "<cmd>Trouble quickfix<cr>",
+        { silent = true, noremap = true }
+      )
+      vim.api.nvim_set_keymap("n", "gR", "<cmd>Trouble lsp_references<cr>",
+        { silent = true, noremap = true }
+      )
     end
   }
 

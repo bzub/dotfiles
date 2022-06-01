@@ -6,6 +6,25 @@ vim.o.completeopt = 'menuone,noinsert,noselect'
 vim.o.history = 1000
 vim.o.scrollback = 1000
 vim.o.foldlevelstart = 999
+vim.o.verbose = false
+vim.o.relativenumber = true
+vim.o.number = true
+
+-- vim.o.writebackup = true --  protect against crash-during-write
+-- vim.o.nobackup = true --  but do not persist backup after successful write
+-- vim.o.backupcopy = 'auto' --  use rename-and-write-new method whenever safe
+
+-- Use `git grep` for :grep
+-- Maybe this instea? https://gist.github.com/hotchpotch/719707
+vim.o.grepprg = 'git --no-pager grep --no-color -n $*'
+vim.o.grepformat = '%f:%l:%m,%m %f match%ts,%f'
+
+--  persist the undo tree for each file
+vim.o.undofile = true
+
+-- ShaDa
+-- shada=!,'100,<50,s10,h
+vim.o.shada = [[!,'1000,f1,<1000,h,%]]
 
 -- Only show cursorline in the current window and in normal mode.
 vim.cmd([[
@@ -19,6 +38,17 @@ vim.cmd([[
       au WinEnter * set cursorcolumn
       au InsertEnter * set nocursorcolumn
       au InsertLeave * set cursorcolumn
+  augroup END
+]])
+
+-- Terminal specific settings
+vim.cmd([[
+  augroup neovim_terminal
+    autocmd!
+    " Disables number lines on terminal buffers
+    autocmd TermOpen * :set nonumber norelativenumber
+    " allows you to use Ctrl-c on terminal window
+    autocmd TermOpen * nnoremap <buffer> <C-c> i<C-c>
   augroup END
 ]])
 
