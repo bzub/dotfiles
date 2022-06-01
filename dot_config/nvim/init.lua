@@ -9,8 +9,8 @@ vim.cmd([[
     let g:gruvbox_material_enable_italic = 1
     let g:gruvbox_material_enable_bold = 1
     let g:gruvbox_material_ui_contrast = 'high'
-    let l:hard_palette = gruvbox_material#get_palette('hard', 'material')
-    let l:medium_palette = gruvbox_material#get_palette('medium', 'material')
+    let l:hard_palette = gruvbox_material#get_palette('hard', 'material', {})
+    let l:medium_palette = gruvbox_material#get_palette('medium', 'material', {})
 
     " mini.nvim
     call gruvbox_material#highlight('NormalHard', l:hard_palette.fg0, l:hard_palette.bg0)
