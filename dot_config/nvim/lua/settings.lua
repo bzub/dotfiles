@@ -1,5 +1,8 @@
 HOME = os.getenv("HOME")
 
+-- Global statusline
+vim.o.laststatus = 3
+
 -- basic settings
 vim.o.encoding = "utf-8"
 vim.o.completeopt = 'menuone,noinsert,noselect'
@@ -47,8 +50,10 @@ vim.cmd([[
     autocmd!
     " Disables number lines on terminal buffers
     autocmd TermOpen * :set nonumber norelativenumber
-    " allows you to use Ctrl-c on terminal window
-    autocmd TermOpen * nnoremap <buffer> <C-c> i<C-c>
+    " Allows you to use Ctrl-c on terminal window
+    " autocmd TermOpen * nnoremap <buffer> <C-c> i<C-c>
+    " No indentscope
+    autocmd TermOpen * :let b:miniindentscope_disable=v:true
   augroup END
 ]])
 
