@@ -928,9 +928,9 @@ return require('packer').startup({ function(use)
     end
   }
 end,
-config = {
-  display = {
-    open_fn = require('packer.util').float,
+  config = {
+    display = {
+      open_fn = require('packer.util').float,
+    },
   },
-},
 })
