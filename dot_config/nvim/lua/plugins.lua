@@ -27,13 +27,17 @@ return require('packer').startup({ function(use)
     requires = {
       'nvim-treesitter/nvim-treesitter-refactor',
       'nvim-treesitter/nvim-treesitter-context',
+      'nvim-treesitter/nvim-treesitter-textobjects'
     },
     config = function()
       require 'nvim-treesitter.configs'.setup {
         ensure_installed = "all",
         highlight = { enable = true },
         incremental_selection = { enable = true },
-        textobjects = { enable = true },
+        textobjects = {
+          enable = true,
+          set_jumps = true,
+        },
         indent = { enable = true },
         context = { enable = true },
         refactor = {
