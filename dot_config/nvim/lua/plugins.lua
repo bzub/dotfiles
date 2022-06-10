@@ -159,32 +159,17 @@ return require('packer').startup({ function(use)
       { 'nvim-telescope/telescope-ui-select.nvim' },
       { 'nvim-telescope/telescope-file-browser.nvim' },
       { 'nvim-telescope/telescope-packer.nvim' },
-      { 'folke/trouble.nvim' },
     },
 
     config = function()
-      local trouble = require("trouble.providers.telescope")
-
       require 'telescope'.setup {
         defaults = {
           file_sorter = require('mini.fuzzy').get_telescope_sorter,
           generic_sorter = require('mini.fuzzy').get_telescope_sorter,
           winblend = 0,
           sorting_strategy = "descending",
-          layout_strategy = "center",
+          -- layout_strategy = "center",
           path_display = {},
-          mappings = {
-            i = {
-              ["<C-Down>"] = require('telescope.actions').cycle_history_next,
-              ["<C-Up>"] = require('telescope.actions').cycle_history_prev,
-              ["<c-t>"] = trouble.open_with_trouble,
-            },
-            n = { ["<c-t>"] = trouble.open_with_trouble },
-          },
-          history = {
-            path = '~/.local/share/nvim/databases/telescope_history.sqlite3',
-            limit = 1000,
-          },
           cache_picker = {
             num_pickers = 20,
             limit_entries = 1000,
@@ -215,7 +200,6 @@ return require('packer').startup({ function(use)
       }
 
       require 'telescope'.load_extension 'ghq'
-      require 'telescope'.load_extension 'smart_history'
       require 'telescope'.load_extension 'frecency'
       require 'telescope'.load_extension 'projects'
       require 'telescope'.load_extension 'ui-select'
@@ -404,35 +388,6 @@ return require('packer').startup({ function(use)
         tabpage_section = 'right',
       })
       require 'mini.trailspace'.setup()
-    end
-  }
-
-  -- Lua
-  use {
-    "folke/trouble.nvim",
-    requires = "kyazdani42/nvim-web-devicons",
-    config = function()
-      require("trouble").setup {}
-
-      -- Keybindings
-      vim.api.nvim_set_keymap("n", "<leader>xx", "<cmd>Trouble<cr>",
-        { silent = true, noremap = true }
-      )
-      vim.api.nvim_set_keymap("n", "<leader>xw", "<cmd>Trouble workspace_diagnostics<cr>",
-        { silent = true, noremap = true }
-      )
-      vim.api.nvim_set_keymap("n", "<leader>xd", "<cmd>Trouble document_diagnostics<cr>",
-        { silent = true, noremap = true }
-      )
-      vim.api.nvim_set_keymap("n", "<leader>xl", "<cmd>Trouble loclist<cr>",
-        { silent = true, noremap = true }
-      )
-      vim.api.nvim_set_keymap("n", "<leader>xq", "<cmd>Trouble quickfix<cr>",
-        { silent = true, noremap = true }
-      )
-      vim.api.nvim_set_keymap("n", "gR", "<cmd>Trouble lsp_references<cr>",
-        { silent = true, noremap = true }
-      )
     end
   }
 
