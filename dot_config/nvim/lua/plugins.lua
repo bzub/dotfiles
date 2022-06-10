@@ -325,21 +325,10 @@ return require('packer').startup({ function(use)
         open_term(new_idx)
       end
 
-      map('n', '][', '<CMD>lua _G.Bzub.ToggleTerm(vim.api.nvim_get_current_tabpage())<CR>')
-      map('i', '][', '<CMD>lua _G.Bzub.ToggleTerm(vim.api.nvim_get_current_tabpage())<CR>')
-      map('t', '][', '<C-\\><C-n><CMD>lua _G.Bzub.ToggleTerm(vim.api.nvim_get_current_tabpage())<CR>')
-
-      map('n', '[]', '<CMD>lua _G.Bzub.NewTerm()<CR>')
-      map('i', '[]', '<CMD>lua _G.Bzub.NewTerm()<CR>')
-      map('t', '[]', '<C-\\><C-n><CMD>lua _G.Bzub.NewTerm()<CR>')
-
-      map('n', ']\\', '<CMD>lua _G.Bzub.NextTerm()<CR>')
-      map('i', ']\\', '<CMD>lua _G.Bzub.NextTerm()<CR>')
-      map('t', ']\\', '<C-\\><C-n><CMD>lua _G.Bzub.NextTerm()<CR>')
-
-      map('n', '[\\', '<CMD>lua _G.Bzub.PreviousTerm()<CR>')
-      map('i', '[\\', '<CMD>lua _G.Bzub.PreviousTerm()<CR>')
-      map('t', '[\\', '<C-\\><C-n><CMD>lua _G.Bzub.PreviousTerm()<CR>')
+      mapall('<M-C-T>', '<CMD>lua _G.Bzub.ToggleTerm(vim.api.nvim_get_current_tabpage())<CR>')
+      map('t', '<M-C-N>', '<CMD>lua _G.Bzub.NewTerm()<CR>')
+      map('t', '<M-C-]>', '<CMD>lua _G.Bzub.NextTerm()<CR>')
+      map('t', '<M-Esc>', '<CMD>lua _G.Bzub.PreviousTerm()<CR>')
     end,
   }
 
