@@ -371,7 +371,10 @@ return require('packer').startup({ function(use)
       require 'mini.jump2d'.setup()
       require 'mini.misc'.setup()
       require 'mini.pairs'.setup()
-      require 'mini.statusline'.setup()
+      require 'mini.statusline'.setup({
+        -- Global statusline
+        set_vim_settings = false,
+      })
       require 'mini.surround'.setup()
       require 'mini.tabline'.setup({
         tabpage_section = 'right',
