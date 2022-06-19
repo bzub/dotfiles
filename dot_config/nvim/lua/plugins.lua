@@ -80,7 +80,7 @@ return require('packer').startup({ function(use)
     config = function()
       -- Mappings.
       -- See `:help vim.diagnostic.*` for documentation on any of the below functions
-      local opts = { noremap=true, silent=true }
+      local opts = { noremap = true, silent = true }
       vim.keymap.set('n', '<space>e', vim.diagnostic.open_float, opts)
       vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, opts)
       vim.keymap.set('n', ']d', vim.diagnostic.goto_next, opts)
@@ -94,7 +94,7 @@ return require('packer').startup({ function(use)
 
         -- Mappings.
         -- See `:help vim.lsp.*` for documentation on any of the below functions
-        local bufopts = { noremap=true, silent=true, buffer=bufnr }
+        local bufopts = { noremap = true, silent = true, buffer = bufnr }
         vim.keymap.set('n', 'gD', vim.lsp.buf.declaration, bufopts)
         vim.keymap.set('n', 'gd', vim.lsp.buf.definition, bufopts)
         vim.keymap.set('n', 'K', vim.lsp.buf.hover, bufopts)
@@ -126,7 +126,7 @@ return require('packer').startup({ function(use)
       end
 
       -- Lua
-      require'lspconfig'.sumneko_lua.setup {
+      require 'lspconfig'.sumneko_lua.setup {
         on_attach = on_attach,
         flags = {
           -- This will be the default in neovim 0.7+
@@ -140,7 +140,7 @@ return require('packer').startup({ function(use)
             },
             diagnostics = {
               -- Get the language server to recognize the `vim` global
-              globals = {'vim'},
+              globals = { 'vim' },
             },
             workspace = {
               -- Make the server aware of Neovim runtime files
