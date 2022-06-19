@@ -216,7 +216,11 @@ return require('packer').startup({ function(use)
 
   use { "ahmedkhalf/project.nvim",
     config = function()
-      require("project_nvim").setup {}
+      require("project_nvim").setup({
+        manual_mode = true,
+        show_hidden = true,
+        silent_chdir = false,
+      })
     end
   }
 
