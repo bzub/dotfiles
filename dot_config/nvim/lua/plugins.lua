@@ -88,7 +88,7 @@ return require('packer').startup({ function(use)
 
       -- Use an on_attach function to only map the following keys
       -- after the language server attaches to the current buffer
-      local on_attach = function(client, bufnr)
+      local on_attach = function(_, bufnr)
         -- Enable completion triggered by <c-x><c-o>
         vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
 
@@ -457,10 +457,10 @@ return require('packer').startup({ function(use)
       'kyazdani42/nvim-web-devicons',
     },
     config = function()
-      require 'mini.bufremove'.setup()
-      require 'mini.comment'.setup()
-      require 'mini.cursorword'.setup()
-      require 'mini.fuzzy'.setup()
+      require 'mini.bufremove'.setup {}
+      require 'mini.comment'.setup {}
+      require 'mini.cursorword'.setup {}
+      require 'mini.fuzzy'.setup {}
       require 'mini.indentscope'.setup({
         draw = {
           delay = 100,
@@ -473,10 +473,10 @@ return require('packer').startup({ function(use)
           ),
         },
       })
-      require 'mini.jump'.setup()
-      require 'mini.jump2d'.setup()
-      require 'mini.misc'.setup()
-      require 'mini.pairs'.setup()
+      require 'mini.jump'.setup {}
+      require 'mini.jump2d'.setup {}
+      require 'mini.misc'.setup {}
+      require 'mini.pairs'.setup {}
       require 'mini.statusline'.setup({
         -- Global statusline
         set_vim_settings = false,
@@ -501,11 +501,11 @@ return require('packer').startup({ function(use)
           end
         }
       })
-      require 'mini.surround'.setup()
+      require 'mini.surround'.setup {}
       require 'mini.tabline'.setup({
         tabpage_section = 'right',
       })
-      require 'mini.trailspace'.setup()
+      require 'mini.trailspace'.setup {}
     end
   }
 
