@@ -242,6 +242,16 @@ return require('packer').startup({ function(use)
     },
 
     config = function()
+      local actions = {}
+      actions.smart_send_to_qflist = function(prompt_bufnr)
+        require('telescope.actions').smart_send_to_qflist(prompt_bufnr)
+        require('telescope.actions').open_qflist(prompt_bufnr)
+      end
+      actions.smart_add_to_qflist = function(prompt_bufnr)
+        require('telescope.actions').smart_add_to_qflist(prompt_bufnr)
+        require('telescope.actions').open_qflist(prompt_bufnr)
+      end
+
       require 'telescope'.setup {
         defaults = {
           file_sorter = require('mini.fuzzy').get_telescope_sorter,
@@ -257,8 +267,23 @@ return require('packer').startup({ function(use)
           preview = {
             hide_on_startup = false,
           },
+          mappings = {
+            i = {
+              ["<M-q>"] = false,
+              ["<M-C-Q>"] = actions.smart_send_to_qflist,
+              ["<M-C-A>"] = actions.smart_add_to_qflist,
+            },
+            n = {
+              ["<M-q>"] = false,
+              ["<M-C-Q>"] = 'smart_send_to_qflist',
+              ["<M-C-A>"] = 'smart_add_to_qflist',
+            },
+          },
         },
         builtin = {
+          builtin = {
+            include_extensions = true,
+          },
           oldfiles = {
             only_cwd = true,
           },
@@ -279,6 +304,7 @@ return require('packer').startup({ function(use)
         },
       }
 
+      require 'telescope'.load_extension 'gh'
       require 'telescope'.load_extension 'ghq'
       require 'telescope'.load_extension 'frecency'
       require 'telescope'.load_extension 'projects'
