@@ -1,36 +1,36 @@
 #!/usr/bin/env zsh
 
 source "${HOME}/.secret-rc.sh"
-source <(antibody init)
+source /usr/local/opt/antidote/share/antidote/antidote.zsh
+antidote load
 
-# Specify completions we want before the completion module
-antibody bundle zsh-users/zsh-completions
+cache_dir="/tmp/zsh_source_cache"
+mkdir -p "${cache_dir}"
 
-# Specify plugins we want
-antibody bundle belak/zsh-utils path:editor
-antibody bundle belak/zsh-utils path:history
-antibody bundle belak/zsh-utils path:prompt
-antibody bundle belak/zsh-utils path:utility
-antibody bundle belak/zsh-utils path:completion
+get_cache_file() {
+  name="${1}"
+  cache_file="${cache_dir}/${name}.zsh"
+  echo "${cache_file}"
+}
 
-# # Specify additional external plugins we want
-antibody bundle zsh-users/zsh-syntax-highlighting
-antibody bundle mafredri/zsh-async
-antibody bundle sindresorhus/pure
+check_cache_file() {
+  cache_file="${1}"
+  if [ -f "${cache_file}" ]; then
+    return 0
+  fi
+  return 1
+}
 
-autoload -U +X bashcompinit && bashcompinit
-
-if [ $commands[kubectl] ]; then
-  source <(kubectl completion zsh)
-fi
-
-if [ $commands[kpt] ]; then
-  source <(kpt completion zsh)
-fi
-
-if [ $commands[talosctl] ]; then
-  source <(talosctl completion zsh)
-fi
+for tool in kubectl kpt talosctl; do
+  if [ $commands[$tool] ]; then
+    cache_file="$(get_cache_file "${tool}")"
+    if ! check_cache_file "${cache_file}"; then
+      echo "[INFO] putting completions in ${cache_file}"
+      "${tool}" completion zsh > "${cache_file}"
+    fi
+    source "${cache_file}"
+  fi
+done
 
 if [ -f "/usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/path.zsh.inc" ]; then
   source '/usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/path.zsh.inc'
@@ -51,8 +51,12 @@ fpath=(~/.zsh/completion $fpath)
 compinit -i
 
 # Set any settings or overrides here
-autoload -U promptinit; promptinit
-prompt pure
+autoload -Uz promptinit && promptinit && prompt pure
 bindkey -v
 
 export KUBECONFIG="${HOME}/.kube/config:${HOME}/.kube/config-base:${HOME}/.kube/config-management"
+export HOMEBREW_AUTOREMOVE="true"
+export HOMEBREW_NO_ANALYTICS="true"
+export HOMEBREW_NO_ENV_HINTS="true"
+export HISTSIZE=999999999
+export SAVEHIST=$HISTSIZE

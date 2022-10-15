@@ -1,0 +1,14 @@
+# Specify completions we want before the completion module
+zsh-users/zsh-completions
+
+# Specify plugins we want
+belak/zsh-utils path:editor
+belak/zsh-utils path:history
+belak/zsh-utils path:prompt
+belak/zsh-utils path:utility
+belak/zsh-utils path:completion
+
+# Specify additional external plugins we want
+zsh-users/zsh-syntax-highlighting
+mafredri/zsh-async
+sindresorhus/pure
