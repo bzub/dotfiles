@@ -336,6 +336,13 @@ return require('packer').startup({ function(use)
             only_cwd = true,
           },
         },
+        pickers = {
+          lsp_references =  {
+            show_line = true,
+            trim_text = true,
+            fname_width = 80,
+          },
+        },
         extensions = {
           frecency = {
             default_workspace = 'CWD',
