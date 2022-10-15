@@ -3,6 +3,8 @@ return require('packer').startup({ function(use)
 
   use { 'sainnhe/gruvbox-material' }
 
+  use { 'ellisonleao/glow.nvim' }
+
   use { 'sindrets/diffview.nvim', requires = 'nvim-lua/plenary.nvim' }
 
   use { 'TimUntersberger/neogit',
