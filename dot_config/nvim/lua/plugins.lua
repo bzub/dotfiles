@@ -139,6 +139,36 @@ return require('packer').startup({ function(use)
         }
       end
 
+      -- yaml
+      require 'lspconfig'.yamlls.setup {
+        on_attach = on_attach,
+        flags = {
+          -- This will be the default in neovim 0.7+
+          debounce_text_changes = 150,
+        },
+        settings = {
+          yaml = {
+            redhat = {
+              telemetry = {
+                enabled = false
+              }
+            },
+            yamlVersion = '1.2',
+            validate = true,
+            hover = true,
+            completion = true,
+            -- disableDefaultProperties = true,
+            disableAdditionalProperties = true,
+            schemaStore = {
+              enable = true,
+            },
+            format = {
+              enable = false,
+            },
+          },
+        },
+      }
+
       -- Lua
       require 'lspconfig'.sumneko_lua.setup {
         on_attach = on_attach,
