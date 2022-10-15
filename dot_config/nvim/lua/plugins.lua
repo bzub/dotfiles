@@ -374,7 +374,7 @@ return require('packer').startup({ function(use)
       mapall('<Leader>f', '<Cmd>Telescope frecency<cr>')
       mapall('<Leader>g', '<Cmd>Telescope ghq list<cr>')
       mapall('<Leader>o', '<Cmd>Telescope oldfiles<cr>')
-      mapall('<Leader>o', '<Cmd>Telescope buffers<cr>')
+      mapall('<Leader>b', '<Cmd>Telescope buffers<cr>')
       mapall('<Leader>t', '<Cmd>Telescope termfinder<cr>')
     end
   }
