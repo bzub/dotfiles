@@ -408,6 +408,9 @@ return require('packer').startup({ function(use)
     },
     config = function()
       require "octo".setup()
+      vim.cmd([[
+        highlight! link OctoEditable Bg
+      ]])
     end
   }
 
