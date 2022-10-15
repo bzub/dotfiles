@@ -379,121 +379,24 @@ return require('packer').startup({ function(use)
     end
   }
 
-  use { "numToStr/FTerm.nvim",
+  use { 'akinsho/toggleterm.nvim',
     config = function()
-      -- TODO: Move this out to be used generally.
-      local has_key = function(something, key)
-        return something[key] ~= nil
-      end
-      if not has_key(_G, "Bzub") then
-        _G.Bzub = {}
-      end
-
-      local term_config = {
-        cmd = "zsh",
-        hl = 'NormalHard',
-        blend = 0,
-        on_exit = function(job_id, _, _)
-          for i, _ in ipairs(_G.Bzub.Terms) do
-            if _G.Bzub.Terms[i].job_id_copy == job_id then
-              table.remove(_G.Bzub.Terms, i)
-              if _G.Bzub.CurrentTerm > table.maxn(_G.Bzub.Terms) then
-                _G.Bzub.CurrentTerm = table.maxn(_G.Bzub.Terms)
-              end
-            end
+      require("toggleterm").setup {
+        persist_mode = true, -- if set to true the previous terminal mode will be remembered
+        shade_filetypes = { "none" },
+        open_mapping = [[<C-Space>]],
+        hide_numbers = true, -- hide the number column in toggleterm buffers
+        shade_terminals = true, -- NOTE: this option takes priority over highlights specified so if you specify Normal highlights you should set this to false
+        close_on_exit = true, -- close the terminal window when the process exits
+        size = function(term)
+          if term.direction == "horizontal" then
+            return 40
+          elseif term.direction == "vertical" then
+            return vim.o.columns * 0.4
           end
         end,
       }
-
-      -- Initialize global data
-      if not has_key(_G.Bzub, "Terms") then
-        _G.Bzub.Terms = {}
-      end
-      if not has_key(_G.Bzub, "fterm") then
-        _G.Bzub.fterm = require("FTerm")
-      end
-
-      local new_term = function()
-        local new_idx = table.maxn(_G.Bzub.Terms) + 1
-        local new_term = _G.Bzub.fterm:new(term_config):setup(term_config)
-        new_term.term_idx = new_idx
-        table.insert(_G.Bzub.Terms, new_term)
-        _G.Bzub.CurrentTerm = new_idx
-        return new_idx
-      end
-
-      local get_term = function(term_idx)
-        if not has_key(_G.Bzub.Terms, term_idx) then
-          return nil
-        end
-        return _G.Bzub.Terms[term_idx]
-      end
-
-      local current_term_idx = function()
-        if not has_key(_G.Bzub, "CurrentTerm") or get_term(_G.Bzub.CurrentTerm) == nil then
-          new_term()
-        end
-        return _G.Bzub.CurrentTerm
-      end
-
-      local current_term = function()
-        return _G.Bzub.Terms[current_term_idx()]
-      end
-
-      local ensure_job_id_copy = function(term_idx)
-        local term = get_term(term_idx)
-        if term ~= nil and term.terminal ~= nil then
-          term.job_id_copy = term.terminal
-        end
-        return term
-      end
-
-      _G.Bzub.ToggleTerm = function()
-        local term = current_term():toggle()
-        ensure_job_id_copy(term.term_idx)
-        return term
-      end
-
-      local close_all_terms = function()
-        for i, _ in ipairs(_G.Bzub.Terms) do
-          ensure_job_id_copy(i)
-          _G.Bzub.Terms[i]:close()
-        end
-      end
-
-      local open_term = function(term_idx)
-        close_all_terms()
-        _G.Bzub.CurrentTerm = term_idx
-        return get_term(term_idx):open()
-      end
-
-      _G.Bzub.NewTerm = function()
-        return open_term(new_term())
-      end
-
-      _G.Bzub.NextTerm = function()
-        local old_idx = current_term_idx()
-        local new_idx = old_idx + 1
-        if new_idx > table.maxn(_G.Bzub.Terms) then
-          new_idx = 1
-        end
-        open_term(new_idx)
-      end
-
-      _G.Bzub.PreviousTerm = function()
-        local old_idx = current_term_idx()
-        local new_idx = old_idx - 1
-        if new_idx < 1 then
-          new_idx = table.maxn(_G.Bzub.Terms)
-        end
-        open_term(new_idx)
-      end
-
-      mapall('<M-C-T>', '<CMD>lua _G.Bzub.ToggleTerm(vim.api.nvim_get_current_tabpage())<CR>')
-      map('t', '<M-C-N>', '<CMD>lua _G.Bzub.NewTerm()<CR>')
-      map('t', '<M-C-]>', '<CMD>lua _G.Bzub.NextTerm()<CR>')
-      map('t', '<M-Esc>', '<CMD>lua _G.Bzub.PreviousTerm()<CR>')
-    end,
+    end
   }
 
   use {
