@@ -305,7 +305,9 @@ return require('packer').startup({ function(use)
           winblend = 0,
           sorting_strategy = "descending",
           layout_strategy = "vertical",
-          path_display = {},
+          path_display = {
+            "smart",
+          },
           cache_picker = {
             num_pickers = 20,
             limit_entries = 1000,
