@@ -7,6 +7,18 @@ return require('packer').startup({ function(use)
 
   use { 'sindrets/diffview.nvim', requires = 'nvim-lua/plenary.nvim' }
 
+  use { 'crispgm/nvim-go',
+    requires = {
+      'nvim-lua/plenary.nvim',
+    },
+    config = function()
+      require('go').setup{
+        auto_lint = true,
+        lint_prompt_style = 'vt',
+      }
+    end
+  }
+
   use { 'TimUntersberger/neogit',
     branch = 'master',
     requires = {
