@@ -262,7 +262,7 @@ return require('packer').startup({ function(use)
     config = function()
       require("project_nvim").setup({
         manual_mode = true,
-        show_hidden = true,
+        show_hidden = false, -- TODO: Open issue to customize picker, etc. I want hidden files but not .git.
         silent_chdir = false,
       })
     end
