@@ -29,5 +29,5 @@ function mapall(shortcut, command)
   imap(shortcut, command)
   vmap(shortcut, command)
   cmap(shortcut, command)
-  tmap(shortcut, '<C-\\><C-n>' .. command)
+  -- tmap(shortcut, '<C-\\><C-n>' .. command)
 end
