@@ -421,6 +421,7 @@ return require('packer').startup({ function(use)
       'kyazdani42/nvim-web-devicons',
     },
     config = function()
+      require 'mini.ai'.setup {}
       require 'mini.bufremove'.setup {}
       require 'mini.comment'.setup {}
       require 'mini.cursorword'.setup {}
