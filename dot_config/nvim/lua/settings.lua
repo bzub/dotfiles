@@ -47,12 +47,11 @@ vim.cmd([[
   augroup END
 ]])
 
--- Terminal specific settings
 vim.cmd([[
   augroup neovim_terminal
     autocmd!
     " Disables number lines on terminal buffers
-    autocmd TermOpen * :set nonumber norelativenumber
+    " autocmd TermOpen * :set nonumber norelativenumber
     " Allows you to use Ctrl-c on terminal window
     " autocmd TermOpen * nnoremap <buffer> <C-c> i<C-c>
     " No indentscope
