@@ -283,6 +283,8 @@ return require('packer').startup({ function(use)
       { 'nvim-telescope/telescope-ui-select.nvim' },
       { 'nvim-telescope/telescope-file-browser.nvim' },
       { 'nvim-telescope/telescope-packer.nvim' },
+      { 'tknightz/telescope-termfinder.nvim' },
+      { 'pwntester/octo.nvim' },
     },
 
     config = function()
@@ -355,6 +357,8 @@ return require('packer').startup({ function(use)
       require 'telescope'.load_extension 'ui-select'
       require 'telescope'.load_extension 'file_browser'
       require 'telescope'.load_extension 'packer'
+      require 'telescope'.load_extension 'termfinder'
+      require 'telescope'.load_extension 'octo'
 
       mapall('<Leader><Space>', '<Cmd>Telescope<cr>')
       mapall('<Leader>p', '<Cmd>Telescope projects<cr>')
@@ -362,6 +366,7 @@ return require('packer').startup({ function(use)
       mapall('<Leader>g', '<Cmd>Telescope ghq list<cr>')
       mapall('<Leader>o', '<Cmd>Telescope oldfiles<cr>')
       mapall('<Leader>o', '<Cmd>Telescope buffers<cr>')
+      mapall('<Leader>t', '<Cmd>Telescope termfinder<cr>')
     end
   }
 
