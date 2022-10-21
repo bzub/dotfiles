@@ -17,66 +17,19 @@ return require('packer').startup({ function(use)
     end
   }
 
-  use { 'TimUntersberger/neogit',
-    branch = 'master',
-    requires = {
-      'nvim-lua/plenary.nvim',
-      'sindrets/diffview.nvim',
-    },
-    config = function()
-      require('neogit').setup({
-        disable_commit_confirmation = true,
-        integrations = {
-          diffview = true,
-        },
-      })
-    end
-  }
-
   use { 'nvim-treesitter/nvim-treesitter',
     branch = 'master',
     run = ':TSUpdate',
     requires = {
-      'nvim-treesitter/nvim-treesitter-refactor',
       'nvim-treesitter/nvim-treesitter-context',
-      'nvim-treesitter/nvim-treesitter-textobjects'
     },
     config = function()
       require 'nvim-treesitter.configs'.setup {
         ensure_installed = "all",
         highlight = { enable = true },
         incremental_selection = { enable = true },
-        textobjects = {
-          enable = true,
-          set_jumps = true,
-        },
         indent = { enable = true },
         context = { enable = true },
-        refactor = {
-          highlight_definitions = {
-            enable = true,
-            clear_on_cursor_move = true,
-          },
-          highlight_current_scope = { enable = false },
-          smart_rename = {
-            enable = true,
-            keymaps = {
-              smart_rename = "grr",
-            },
-          },
-          navigation = {
-            enable = true,
-            keymaps = {
-              -- TODO: need to disable this default keymap?
-              -- goto_definition = "gnd",
-              -- goto_definition_lsp_fallback = "gnd",
-              list_definitions = "gnD",
-              list_definitions_toc = "gO",
-              goto_next_usage = "<a-*>",
-              goto_previous_usage = "<a-#>",
-            },
-          },
-        },
       }
 
       vim.o.foldexpr = 'nvim_treesitter#foldexpr()'
@@ -417,7 +370,6 @@ return require('packer').startup({ function(use)
       require 'mini.bufremove'.setup {}
       require 'mini.comment'.setup {}
       require 'mini.completion'.setup {}
-      require 'mini.cursorword'.setup {}
       require 'mini.fuzzy'.setup {}
       require 'mini.indentscope'.setup({
         draw = {
