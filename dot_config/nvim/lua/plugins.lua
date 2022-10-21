@@ -385,6 +385,32 @@ return require('packer').startup({ function(use)
       })
       require 'mini.jump'.setup {}
       require 'mini.jump2d'.setup {}
+      local map = require('mini.map')
+      map.setup {
+        integrations = {
+          map.gen_integration.builtin_search(),
+          map.gen_integration.gitsigns(),
+          map.gen_integration.diagnostic(),
+        },
+        symbols = {
+          encode = map.gen_encode_symbols.shade('1x2'),
+          scroll_line = '▶',
+          scroll_view = '┋',
+        },
+        window = {
+          focusable = false,
+          side = 'right',
+          show_integration_count = true,
+          width = 20,
+          winblend = 25,
+        },
+      }
+      vim.keymap.set('n', '<Leader>mc', MiniMap.close)
+      vim.keymap.set('n', '<Leader>mf', MiniMap.toggle_focus)
+      vim.keymap.set('n', '<Leader>mo', MiniMap.open)
+      vim.keymap.set('n', '<Leader>mr', MiniMap.refresh)
+      vim.keymap.set('n', '<Leader>ms', MiniMap.toggle_side)
+      vim.keymap.set('n', '<Leader>mt', MiniMap.toggle)
       require 'mini.misc'.setup {}
       require 'mini.pairs'.setup {}
       require 'mini.statusline'.setup({
