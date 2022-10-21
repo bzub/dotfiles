@@ -17,7 +17,6 @@ vim.cmd([[
   augroup END
 ]])
 require('settings')
-require('mappings')
 require('plugins')
-vim.cmd([[colorscheme gruvbox-material]])
-vim.cmd([[colorscheme gruvbox-material]])
+
+vim.cmd([[colorscheme base16-gruvbox-material-dark-medium]])

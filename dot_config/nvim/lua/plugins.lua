@@ -1,8 +1,6 @@
 return require('packer').startup({ function(use)
   use { 'wbthomason/packer.nvim' }
 
-  use { 'sainnhe/gruvbox-material' }
-
   use { 'ellisonleao/glow.nvim' }
 
   use { 'sindrets/diffview.nvim', requires = 'nvim-lua/plenary.nvim' }
@@ -380,7 +378,7 @@ return require('packer').startup({ function(use)
     config = function()
       require("toggleterm").setup {
         persist_mode = true, -- if set to true the previous terminal mode will be remembered
-        shade_filetypes = { "none" },
+        shade_filetypes = { 'toggleterm' },
         open_mapping = [[<C-Space>]],
         hide_numbers = true, -- hide the number column in toggleterm buffers
         shade_terminals = true, -- NOTE: this option takes priority over highlights specified so if you specify Normal highlights you should set this to false
@@ -405,9 +403,6 @@ return require('packer').startup({ function(use)
     },
     config = function()
       require "octo".setup()
-      vim.cmd([[
-        highlight! link OctoEditable Bg
-      ]])
     end
   }
 
