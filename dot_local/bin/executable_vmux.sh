@@ -9,4 +9,5 @@ fi
 export SHELL="/usr/local/bin/zsh"
 export EDITOR="nvim"
 cd "${HOME}/ghq"
-/usr/local/bin/abduco -f -A -e '˝' "${name}" "/usr/local/bin/nvim" "-V1"
+/usr/local/bin/abduco -f -A -e '˝' "${name}" \
+  "/usr/local/bin/nvim" "-V1" "--listen" "${HOME}/.cache/nvim/server.pipe"
