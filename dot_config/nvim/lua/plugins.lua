@@ -217,8 +217,7 @@ return require('packer').startup({ function(use)
   }
 
   -- telescope
-  use {
-    'nvim-telescope/telescope.nvim',
+  use { 'nvim-telescope/telescope.nvim',
     requires = {
       { 'nvim-lua/plenary.nvim' },
       { 'nvim-telescope/telescope-github.nvim' },
@@ -347,8 +346,7 @@ return require('packer').startup({ function(use)
     end
   }
 
-  use {
-    'pwntester/octo.nvim',
+  use { 'pwntester/octo.nvim',
     requires = {
       'nvim-lua/plenary.nvim',
       'nvim-telescope/telescope.nvim',
@@ -445,8 +443,7 @@ return require('packer').startup({ function(use)
     end
   }
 
-  use {
-    "folke/which-key.nvim",
+  use { "folke/which-key.nvim",
     config = function()
       require("which-key").setup {
       }
