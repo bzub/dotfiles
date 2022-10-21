@@ -1,0 +1,28 @@
+prSections:
+  - title: Involves Me
+    filters: is:open involves:@me sort:updated-desc
+  - title: My Pull Requests
+    filters: is:open author:@me sort:updated-desc
+  - title: All Pull Requests
+    filters: is:open sort:updated-desc org:Kubernetes
+issuesSections:
+  - title: Involves Me
+    filters: is:open involves:@me sort:updated-desc
+  - title: My Issues
+    filters: is:open author:@me sort:updated-desc
+  - title: Assigned To Me
+    filters: is:open assignee:@me
+  - title: All Issues
+    filters: is:open sort:updated-desc org:Kubernetes
+defaults:
+  prsLimit: 100 # global limit
+  issuesLimit: 100 # global limit
+  preview:
+    open: true
+    width: 80
+# repoPaths:
+#   dlvhdr/gh-dash: ~/code/gh-dash
+# keybindings: # optional
+#   prs:
+#     - key: c
+#       command: cd {{.RepoPath}}; gh pr checkout {{.PrNumber}}
