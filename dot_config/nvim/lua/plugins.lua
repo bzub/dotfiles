@@ -366,13 +366,13 @@ return require('packer').startup({ function(use)
       require 'telescope'.load_extension 'termfinder'
       require 'telescope'.load_extension 'octo'
 
-      mapall('<Leader><Space>', '<Cmd>Telescope<cr>')
-      mapall('<Leader>p', '<Cmd>Telescope projects<cr>')
-      mapall('<Leader>f', '<Cmd>Telescope frecency<cr>')
-      mapall('<Leader>g', '<Cmd>Telescope ghq list<cr>')
-      mapall('<Leader>o', '<Cmd>Telescope oldfiles<cr>')
-      mapall('<Leader>b', '<Cmd>Telescope buffers<cr>')
-      mapall('<Leader>t', '<Cmd>Telescope termfinder<cr>')
+      vim.keymap.set('n', '<Leader><Space>', '<Cmd>Telescope<cr>')
+      vim.keymap.set('n', '<Leader>p', '<Cmd>Telescope projects<cr>')
+      vim.keymap.set('n', '<Leader>f', '<Cmd>Telescope frecency<cr>')
+      vim.keymap.set('n', '<Leader>g', '<Cmd>Telescope ghq list<cr>')
+      vim.keymap.set('n', '<Leader>o', '<Cmd>Telescope oldfiles<cr>')
+      vim.keymap.set('n', '<Leader>b', '<Cmd>Telescope buffers<cr>')
+      vim.keymap.set('n', '<Leader>t', '<Cmd>Telescope termfinder<cr>')
     end
   }
 
