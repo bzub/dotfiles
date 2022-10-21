@@ -93,3 +93,6 @@ local sessionoptions = {
   "winpos",
 }
 vim.o.sessionoptions = table.concat(sessionoptions, ",")
+
+-- Mappings
+vim.cmd('noremap <C-b> :noh<cr>:call clearmatches()<cr>') -- clear matches Ctrl+b

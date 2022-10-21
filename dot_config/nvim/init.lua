@@ -1,16 +1,16 @@
--- vim.api.
-vim.cmd([[
-  function! s:gruvbox_material_custom() abort
-    filetype indent off
-    set termguicolors
-    set background=dark
-    let g:gruvbox_material_better_performance = 0
-    let g:gruvbox_material_background = 'medium'
-    let g:gruvbox_material_enable_italic = 1
-    let g:gruvbox_material_enable_bold = 1
-    let g:gruvbox_material_ui_contrast = 'high'
-  endfunction
-
+vim.g.loaded_gzip = 1
+vim.g.loaded_matchit = 1
+vim.g.loaded_matchparen = 1
+vim.g.loaded_netrwPlugin = 1
+vim.g.loaded_remote_plugins = 1
+vim.g.loaded_tarPlugin = 1
+vim.g.loaded_2html_plugin = 1
+vim.g.loaded_tutor_mode_plugin = 1
+vim.g.loaded_zipPlugin = 1
+vim.g.did_indent_on = 1
+vim.cmd([[syntax off]])
+vim.o.termguicolors = true
+vim.o.background = "dark"
 
 local hl = function(group, opts)
     opts.default = true
