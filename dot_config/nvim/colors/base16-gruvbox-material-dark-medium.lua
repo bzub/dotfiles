@@ -26,5 +26,5 @@ use_cterm = base16.rgb_palette_to_cterm_palette(palette)
 if palette then
   base16.setup({ palette = palette, use_cterm = use_cterm })
   vim.g.colors_name = 'base16-gruvbox-material-dark-medium'
-  vim.cmd[[highlight WinSeparator guibg=none]]
+  vim.cmd [[highlight WinSeparator guibg=none]]
 end

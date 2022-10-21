@@ -10,7 +10,7 @@ return require('packer').startup({ function(use)
       'nvim-lua/plenary.nvim',
     },
     config = function()
-      require('go').setup{
+      require('go').setup {
         auto_lint = true,
         lint_prompt_style = 'vt',
       }
@@ -285,7 +285,7 @@ return require('packer').startup({ function(use)
           },
         },
         pickers = {
-          lsp_references =  {
+          lsp_references = {
             show_line = true,
             trim_text = true,
             fname_width = 80,
