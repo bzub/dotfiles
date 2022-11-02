@@ -13,7 +13,17 @@ draw_bold_text_with_bright_colors: false
 selection:
   save_to_clipboard: true
 shell:
-  program: /Users/z003vkg/.local/bin/vmux.sh
+  program: /usr/local/bin/abduco
+  args:
+    - -f
+    - -A
+    - -e
+    - ˝
+    - main
+    - /usr/local/bin/nvim
+    - -V1
+    - --listen
+    - ${HOME}/.cache/nvim/server.pipe
 alt_send_esc: true
 mouse:
   hide_when_typing: true

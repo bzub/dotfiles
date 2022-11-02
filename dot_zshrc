@@ -54,6 +54,8 @@ compinit -i
 autoload -Uz promptinit && promptinit && prompt pure
 bindkey -v
 
+export TERM=alacritty
+export EDITOR='nvim --cmd "let g:unception_block_while_host_edits=1"'
 export KUBECONFIG="${HOME}/.kube/config:${HOME}/.kube/config-base:${HOME}/.kube/config-management"
 export HOMEBREW_AUTOREMOVE="true"
 export HOMEBREW_NO_ANALYTICS="true"
