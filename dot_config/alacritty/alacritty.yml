@@ -30,20 +30,10 @@ mouse:
 hints:
   enabled: []
 mouse_bindings: []
+cursor:
+  blinking: Never
+  unfocused_hollow: false
 key_bindings:
   - key: F
     mods: Command|Control
     action: ToggleSimpleFullscreen
-  # - key: Up
-  #   mods: Control
-  #   action: ReceiveChar
-  # - key: Down
-  #   mods: Control
-  #   action: ReceiveChar
-  # - key: Space
-  #   mods: Command
-  #   action: None
-  # - key: Return
-  #   mods: Command
-  #   chars:
-  # #   # action: ReceiveChar
