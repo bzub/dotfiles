@@ -1,5 +1,5 @@
 import:
-  - ~/ghq/gist.github.com/sainnhe/ad5cbc4f05c4ced83f80e54d9a75d22f/gruvbox-material-alacritty.yml
+  - ~/.config/alacritty/gruvbox_material_colors.yaml
 window:
   decorations: none
   startup_mode: SimpleFullscreen
