@@ -89,5 +89,23 @@ local sessionoptions = {
 }
 vim.o.sessionoptions = table.concat(sessionoptions, ",")
 
+-- Functions
+local cleanup_buffers = function()
+  for _, buf in ipairs(vim.api.nvim_list_bufs()) do
+    if vim.api.nvim_buf_get_name(buf) == "" and vim.api.nvim_buf_get_offset(buf, 0) == -1
+    then
+      vim.api.nvim_buf_delete(buf, {})
+    end
+  end
+end
+
+local clear_matches = function()
+  vim.cmd([[noh]])
+  vim.fn.clearmatches()
+end
+
 -- Mappings
-vim.cmd('noremap <C-b> :noh<cr>:call clearmatches()<cr>') -- clear matches Ctrl+b
+vim.keymap.set("n", '<C-B>', function()
+  cleanup_buffers()
+  clear_matches()
+end)
