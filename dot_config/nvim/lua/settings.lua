@@ -59,11 +59,6 @@ vim.cmd([[
   augroup END
 ]])
 
--- Hide Info(Preview) window after completions.
-vim.cmd([[
-  autocmd InsertLeave * if pumvisible() == 0|pclose|endif
-]])
-
 vim.o.wrap = false
 vim.o.hidden = true
 vim.o.incsearch = true
