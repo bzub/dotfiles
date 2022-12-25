@@ -70,8 +70,7 @@ return require('packer').startup({ function(use)
         vim.keymap.set('n', '<space>D', vim.lsp.buf.type_definition, bufopts)
         vim.keymap.set('n', '<space>rn', vim.lsp.buf.rename, bufopts)
         vim.keymap.set('n', '<space>ca', vim.lsp.buf.code_action, bufopts)
-        vim.keymap.set('n', 'gr', vim.lsp.buf.references, bufopts)
-        vim.keymap.set('n', '<space>f', vim.lsp.buf.formatting, bufopts)
+        vim.keymap.set('n', '<space>f', function() vim.lsp.buf.format { async = true } end, bufopts)
       end
 
       -- Use a loop to conveniently call 'setup' on multiple servers and
@@ -80,20 +79,12 @@ return require('packer').startup({ function(use)
       for _, lsp in pairs(servers) do
         require('lspconfig')[lsp].setup {
           on_attach = on_attach,
-          flags = {
-            -- This will be the default in neovim 0.7+
-            debounce_text_changes = 150,
-          }
         }
       end
 
       -- yaml
       require 'lspconfig'.yamlls.setup {
         on_attach = on_attach,
-        flags = {
-          -- This will be the default in neovim 0.7+
-          debounce_text_changes = 150,
-        },
         settings = {
           yaml = {
             redhat = {
@@ -105,7 +96,6 @@ return require('packer').startup({ function(use)
             validate = true,
             hover = true,
             completion = true,
-            -- disableDefaultProperties = true,
             disableAdditionalProperties = true,
             schemaStore = {
               enable = true,
@@ -117,13 +107,8 @@ return require('packer').startup({ function(use)
         },
       }
 
-      -- Lua
       require 'lspconfig'.sumneko_lua.setup {
         on_attach = on_attach,
-        flags = {
-          -- This will be the default in neovim 0.7+
-          debounce_text_changes = 150,
-        },
         settings = {
           Lua = {
             runtime = {
