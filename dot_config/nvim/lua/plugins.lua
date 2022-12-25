@@ -363,6 +363,7 @@ return require('packer').startup({ function(use)
     },
     config = function()
       require 'mini.ai'.setup {}
+      require('mini.animate').setup({})
       require 'mini.bufremove'.setup {}
       require 'mini.comment'.setup {}
       require 'mini.completion'.setup {}
@@ -370,13 +371,11 @@ return require('packer').startup({ function(use)
       require 'mini.indentscope'.setup({
         draw = {
           delay = 100,
-          animation = require 'mini.indentscope'.gen_animation(
-            'cubicIn',
-            {
-              duration = 500,
-              unit = 'total',
-            }
-          ),
+          animation = require 'mini.indentscope'.gen_animation.cubic({
+            easing = 'in',
+            duration = 800,
+            unit = 'total',
+          })
         },
       })
       require 'mini.jump'.setup {}
