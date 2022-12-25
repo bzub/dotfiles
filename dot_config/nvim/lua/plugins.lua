@@ -294,7 +294,6 @@ return require('packer').startup({ function(use)
         'packer',
         'termfinder',
         'octo',
-        'ghn',
       }
 
       for _, extension in pairs(extensions) do
