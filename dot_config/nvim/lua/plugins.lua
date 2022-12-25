@@ -215,7 +215,8 @@ return require('packer').startup({ function(use)
         require('telescope.actions').open_qflist(prompt_bufnr)
       end
 
-      require 'telescope'.setup {
+      local telescope = require 'telescope'
+      telescope.setup {
         defaults = {
           file_sorter = require('mini.fuzzy').get_telescope_sorter,
           generic_sorter = require('mini.fuzzy').get_telescope_sorter,
@@ -276,15 +277,22 @@ return require('packer').startup({ function(use)
         },
       }
 
-      require 'telescope'.load_extension 'gh'
-      require 'telescope'.load_extension 'ghq'
-      require 'telescope'.load_extension 'frecency'
-      require 'telescope'.load_extension 'projects'
-      require 'telescope'.load_extension 'ui-select'
-      require 'telescope'.load_extension 'file_browser'
-      require 'telescope'.load_extension 'packer'
-      require 'telescope'.load_extension 'termfinder'
-      require 'telescope'.load_extension 'octo'
+      local extensions = {
+        'gh',
+        'ghq',
+        'frecency',
+        'projects',
+        'ui-select',
+        'file_browser',
+        'packer',
+        'termfinder',
+        'octo',
+        'ghn',
+      }
+
+      for _, extension in pairs(extensions) do
+        telescope.load_extension(extension)
+      end
 
       vim.keymap.set('n', '<Leader><Space>', '<Cmd>Telescope<cr>')
       vim.keymap.set('n', '<Leader>p', '<Cmd>Telescope projects<cr>')
