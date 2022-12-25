@@ -1,9 +1,7 @@
 return require('packer').startup({ function(use)
   use { 'wbthomason/packer.nvim' }
 
-  use { 'ellisonleao/glow.nvim' }
-
-  use { 'sindrets/diffview.nvim', requires = 'nvim-lua/plenary.nvim' }
+  use { 'samjwill/nvim-unception' }
 
   use { 'crispgm/nvim-go',
     requires = {
@@ -40,6 +38,8 @@ return require('packer').startup({ function(use)
       parser_config.markdown.filetype_to_parsername = "octo"
     end
   }
+
+  use "folke/neodev.nvim"
 
   use { 'neovim/nvim-lspconfig',
     config = function()
@@ -148,11 +148,6 @@ return require('packer').startup({ function(use)
     end,
   }
 
-  use 'tpope/vim-unimpaired'
-  use 'tpope/vim-abolish'
-  use 'tpope/vim-sleuth'
-  use 'nvim-lua/plenary.nvim'
-
   use { 'lewis6991/gitsigns.nvim',
     requires = { 'nvim-lua/plenary.nvim' },
     config = function()
@@ -205,6 +200,9 @@ return require('packer').startup({ function(use)
   }
 
   use 'tpope/vim-eunuch' -- wrappers UNIX commands
+  use 'tpope/vim-abolish'
+  use 'tpope/vim-unimpaired'
+  use 'tpope/vim-sleuth'
 
   use { "ahmedkhalf/project.nvim",
     config = function()
@@ -448,6 +446,13 @@ return require('packer').startup({ function(use)
       require("which-key").setup {
       }
     end
+  }
+
+  use { 'debugloop/telescope-undo.nvim',
+    requires = { 'nvim-telescope/telescope.nvim' },
+    config = function()
+      require("telescope").load_extension("undo")
+    end,
   }
 end,
   config = {
