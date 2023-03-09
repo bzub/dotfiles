@@ -8,7 +8,7 @@ scrolling:
 font:
   normal:
     family: SauceCodePro Nerd Font Mono
-  size: 13.0
+  size: 15.0
 draw_bold_text_with_bright_colors: false
 selection:
   save_to_clipboard: true
@@ -36,4 +36,102 @@ cursor:
 key_bindings:
   - key: F
     mods: Command|Control
-    action: ToggleSimpleFullscreen
+    action: ReceiveChar
+  - mods: Command
+    key: Key0
+    chars: "\uFFFE0"
+  - mods: Command
+    key: Key1
+    chars: "\uFFFE1"
+  - mods: Command
+    key: Key2
+    chars: "\uFFFE2"
+  - mods: Command
+    key: Key3
+    chars: "\uFFFE3"
+  - mods: Command
+    key: Key4
+    chars: "\uFFFE4"
+  - mods: Command
+    key: Key5
+    chars: "\uFFFE5"
+  - mods: Command
+    key: Key6
+    chars: "\uFFFE6"
+  - mods: Command
+    key: Key7
+    chars: "\uFFFE7"
+  - mods: Command
+    key: Key8
+    chars: "\uFFFE8"
+  - mods: Command
+    key: Key9
+    chars: "\uFFFE9"
+  - mods: Command
+    key: Return
+    chars: "\uFFFE\u00F1"
+  - mods: Command|Shift
+    key: Return
+    chars: "\uFFFE\u00F2"
+  - mods: Command
+    key: F3
+    chars: "\uFFFE\u00F3"
+  - mods: Command
+    key: F4
+    chars: "\uFFFE\u00F4"
+  - mods: Command
+    key: F5
+    chars: "\uFFFE\u00F5"
+  - mods: Command
+    key: F6
+    chars: "\uFFFE\u00F6"
+  - mods: Command
+    key: F7
+    chars: "\uFFFE\u00F7"
+  - mods: Command
+    key: F8
+    chars: "\uFFFE\u00F8"
+  - mods: Command
+    key: F9
+    chars: "\uFFFE\u00F9"
+  - mods: Command
+    key: F10
+    chars: "\uFFFE\u0F10"
+  - mods: Command
+    key: F11
+    chars: "\uFFFE\u0F11"
+  - mods: Command
+    key: F12
+    chars: "\uFFFE\u0F12"
+  - mods: Command
+    key: D
+    chars: "\uFFFEd"
+  # - mods: Shift
+  #   key: Space
+  #   chars: cmd-space
+  # - mods: Shift|Command
+  #   key: Space
+  #   chars: s-cmd-space
+  # - mods: Command
+  #   key: RAlt
+  #   chars: cmd-RAlt
+  # - { key: K,              mods: Command, mode: ~Vi|~Search, chars: "\x0c"                 }
+  # - { key: K,              mods: Command, mode: ~Vi|~Search, action: ClearHistory          }
+  # - { key: Key0,           mods: Command,                    action: ResetFontSize         }
+  # - { key: Equals,         mods: Command,                    action: IncreaseFontSize      }
+  # - { key: Plus,           mods: Command,                    action: IncreaseFontSize      }
+  # - { key: NumpadAdd,      mods: Command,                    action: IncreaseFontSize      }
+  # - { key: Minus,          mods: Command,                    action: DecreaseFontSize      }
+  # - { key: NumpadSubtract, mods: Command,                    action: DecreaseFontSize      }
+  # - { key: V,              mods: Command,                    action: Paste                 }
+  # - { key: C,              mods: Command,                    action: Copy                  }
+  # - { key: C,              mods: Command, mode: Vi|~Search,  action: ClearSelection        }
+  # - { key: H,              mods: Command,                    action: Hide                  }
+  # - { key: H,              mods: Command|Alt,                action: HideOtherApplications }
+  # - { key: M,              mods: Command,                    action: Minimize              }
+  # - { key: Q,              mods: Command,                    action: Quit                  }
+  # - { key: W,              mods: Command,                    action: Quit                  }
+  # - { key: N,              mods: Command,                    action: SpawnNewInstance      }
+  # - { key: F,              mods: Command|Control,            action: ToggleFullscreen      }
+  # - { key: F,              mods: Command, mode: ~Search,     action: SearchForward         }
+  # - { key: B,              mods: Command, mode: ~Search,     action: SearchBackward        }

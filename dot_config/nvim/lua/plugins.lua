@@ -1,6 +1,34 @@
 return require('packer').startup({ function(use)
   use { 'wbthomason/packer.nvim' }
 
+  use { 'williamboman/mason.nvim',
+    config = function()
+      require("mason").setup()
+    end
+  }
+
+  use { 'williamboman/mason-lspconfig.nvim',
+    after = 'mason.nvim',
+    config = function()
+      require("mason-lspconfig").setup {
+        ensure_installed = {
+          'bashls',
+          'dockerls',
+          'golangci_lint_ls',
+          'gopls',
+          'jsonls',
+          'lua_ls',
+          'marksman', -- Markdown
+          -- 'spectral', -- OpenAPI
+          'taplo',    -- TOML
+          'terraformls',
+          'vimls',
+          'yamlls',
+        }
+      }
+    end
+  }
+
   use { 'samjwill/nvim-unception' }
 
   use { 'crispgm/nvim-go',
@@ -54,6 +82,9 @@ return require('packer').startup({ function(use)
       -- Use an on_attach function to only map the following keys
       -- after the language server attaches to the current buffer
       local on_attach = function(_, bufnr)
+        -- Enable completion triggered by <c-x><c-o>
+        -- vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
+        vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.MiniCompletion.completefunc_lsp')
         -- Mappings.
         -- See `:help vim.lsp.*` for documentation on any of the below functions
         local bufopts = { noremap = true, silent = true, buffer = bufnr }
@@ -75,7 +106,7 @@ return require('packer').startup({ function(use)
 
       -- Use a loop to conveniently call 'setup' on multiple servers and
       -- map buffer local keybindings when the language server attaches
-      local servers = { 'bashls', 'gopls', 'html', 'jsonls' }
+      local servers = { 'bashls', 'gopls', 'html', 'jsonls', 'marksman' }
       for _, lsp in pairs(servers) do
         require('lspconfig')[lsp].setup {
           on_attach = on_attach,
@@ -86,20 +117,20 @@ return require('packer').startup({ function(use)
       require 'lspconfig'.yamlls.setup {
         on_attach = on_attach,
         settings = {
-          yaml = {
-            redhat = {
-              telemetry = {
-                enabled = false
-              }
+          redhat = {
+            telemetry = {
+              enabled = false
             },
-            yamlVersion = '1.2',
+          },
+          yaml = {
+            -- yamlVersion = '1.2',
             validate = true,
             hover = true,
             completion = true,
             disableAdditionalProperties = true,
-            schemaStore = {
-              enable = true,
-            },
+            -- schemaStore = {
+            --   enable = false,
+            -- },
             format = {
               enable = false,
             },
@@ -107,7 +138,7 @@ return require('packer').startup({ function(use)
         },
       }
 
-      require 'lspconfig'.sumneko_lua.setup {
+      require 'lspconfig'.lua_ls.setup {
         on_attach = on_attach,
         settings = {
           Lua = {
@@ -233,18 +264,18 @@ return require('packer').startup({ function(use)
           preview = {
             hide_on_startup = false,
           },
-          mappings = {
-            i = {
-              ["<M-q>"] = false,
-              ["<M-C-Q>"] = actions.smart_send_to_qflist,
-              ["<M-C-A>"] = actions.smart_add_to_qflist,
-            },
-            n = {
-              ["<M-q>"] = false,
-              ["<M-C-Q>"] = 'smart_send_to_qflist',
-              ["<M-C-A>"] = 'smart_add_to_qflist',
-            },
-          },
+          -- mappings = {
+          --   i = {
+          --     ["<M-q>"] = false,
+          --     ["<M-C-Q>"] = actions.smart_send_to_qflist,
+          --     ["<M-C-A>"] = actions.smart_add_to_qflist,
+          --   },
+          --   n = {
+          --     ["<M-q>"] = false,
+          --     ["<M-C-Q>"] = 'smart_send_to_qflist',
+          --     ["<M-C-A>"] = 'smart_add_to_qflist',
+          --   },
+          -- },
         },
         builtin = {
           builtin = {
@@ -316,9 +347,10 @@ return require('packer').startup({ function(use)
   use { 'akinsho/toggleterm.nvim',
     config = function()
       require("toggleterm").setup {
+        auto_scroll = false,
         persist_mode = true, -- if set to true the previous terminal mode will be remembered
         shade_filetypes = { 'toggleterm' },
-        open_mapping = [[<C-Space>]],
+        open_mapping = [[<M-Space>]],
         hide_numbers = true, -- hide the number column in toggleterm buffers
         shade_terminals = true, -- NOTE: this option takes priority over highlights specified so if you specify Normal highlights you should set this to false
         close_on_exit = true, -- close the terminal window when the process exits
@@ -352,10 +384,19 @@ return require('packer').startup({ function(use)
     },
     config = function()
       require 'mini.ai'.setup {}
-      require('mini.animate').setup({})
+      -- require('mini.animate').setup({})
       require 'mini.bufremove'.setup {}
       require 'mini.comment'.setup {}
-      require 'mini.completion'.setup {}
+      require 'mini.completion'.setup {
+        lsp_completion = {
+          source_func = 'omnifunc',
+          auto_setup = false,
+        },
+        mappings = {
+          force_twostep = '<C-Space>',
+          force_fallback = '<A-Space>',
+        },
+      }
       require 'mini.fuzzy'.setup {}
       require 'mini.indentscope'.setup({
         draw = {
@@ -442,6 +483,7 @@ return require('packer').startup({ function(use)
       require("telescope").load_extension("undo")
     end,
   }
+
 end,
   config = {
     display = {

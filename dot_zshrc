@@ -63,4 +63,5 @@ export HOMEBREW_NO_ENV_HINTS="true"
 export HISTSIZE=999999999
 export SAVEHIST=$HISTSIZE
 export USE_GKE_GCLOUD_AUTH_PLUGIN=True
-export DOCKER_HOST="unix://${HOME}/.colima/default/docker.sock"
+
+alias buildx='docker-buildx'
