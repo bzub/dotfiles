@@ -44,7 +44,9 @@ hints:
   enabled: []
 mouse_bindings: []
 cursor:
-  blinking: Never
+  style:
+    shape: Block
+    blinking: Never
   unfocused_hollow: false
 key_bindings:
   - key: F
