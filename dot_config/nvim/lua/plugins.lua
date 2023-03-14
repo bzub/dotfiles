@@ -1,14 +1,32 @@
-return require('packer').startup({ function(use)
-  use { 'wbthomason/packer.nvim' }
+local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
+if not vim.loop.fs_stat(lazypath) then
+  vim.fn.system({
+    "git",
+    "clone",
+    "--filter=blob:none",
+    "https://github.com/folke/lazy.nvim.git",
+    "--branch=stable", -- latest stable release
+    lazypath,
+  })
+end
+vim.opt.rtp:prepend(lazypath)
 
-  use { 'williamboman/mason.nvim',
+local plugins = {
+  { 'williamboman/mason.nvim',
+    module = false,
+    lazy = false,
     config = function()
       require("mason").setup()
     end
-  }
+  },
 
-  use { 'williamboman/mason-lspconfig.nvim',
-    after = 'mason.nvim',
+  { 'williamboman/mason-lspconfig.nvim',
+    module = false,
+    lazy = false,
+    dependencies = {
+      'mason.nvim',
+      'neovim/nvim-lspconfig',
+    },
     config = function()
       require("mason-lspconfig").setup {
         ensure_installed = {
@@ -27,26 +45,14 @@ return require('packer').startup({ function(use)
         }
       }
     end
-  }
+  },
 
-  use { 'samjwill/nvim-unception' }
-
-  use { 'crispgm/nvim-go',
-    requires = {
-      'nvim-lua/plenary.nvim',
-    },
-    config = function()
-      require('go').setup {
-        auto_lint = true,
-        lint_prompt_style = 'vt',
-      }
-    end
-  }
-
-  use { 'nvim-treesitter/nvim-treesitter',
-    branch = 'master',
-    run = ':TSUpdate',
-    requires = {
+  { 'nvim-treesitter/nvim-treesitter',
+    module = false,
+    lazy = false,
+    version = false,
+    build = ':TSUpdate',
+    dependencies = {
       'nvim-treesitter/nvim-treesitter-context',
     },
     config = function()
@@ -65,11 +71,11 @@ return require('packer').startup({ function(use)
       local ft_to_parser = require "nvim-treesitter.parsers".filetype_to_parsername
       ft_to_parser.octo = "markdown"
     end
-  }
+  },
 
-  use "folke/neodev.nvim"
-
-  use { 'neovim/nvim-lspconfig',
+  { 'neovim/nvim-lspconfig',
+    module = false,
+    lazy = false,
     config = function()
       -- Mappings.
       -- See `:help vim.diagnostic.*` for documentation on any of the below functions
@@ -162,223 +168,13 @@ return require('packer').startup({ function(use)
         },
       }
     end,
-  }
+  },
 
-  use { 'lewis6991/gitsigns.nvim',
-    requires = { 'nvim-lua/plenary.nvim' },
-    config = function()
-      require('gitsigns').setup({
-        current_line_blame = false,
-        signcolumn         = false, -- Toggle with `:Gitsigns toggle_signs`
-        numhl              = true, -- Toggle with `:Gitsigns toggle_numhl`
-        linehl             = false, -- Toggle with `:Gitsigns toggle_linehl`
-        word_diff          = false, -- Toggle with `:Gitsigns toggle_word_diff`
-        on_attach          = function(bufnr)
-          local gs = package.loaded.gitsigns
-
-          local function map(mode, l, r, opts)
-            opts = opts or {}
-            opts.buffer = bufnr
-            vim.keymap.set(mode, l, r, opts)
-          end
-
-          -- Navigation
-          map('n', ']c', function()
-            if vim.wo.diff then return ']c' end
-            vim.schedule(function() gs.next_hunk() end)
-            return '<Ignore>'
-          end, { expr = true })
-
-          map('n', '[c', function()
-            if vim.wo.diff then return '[c' end
-            vim.schedule(function() gs.prev_hunk() end)
-            return '<Ignore>'
-          end, { expr = true })
-
-          -- Text object
-          map({ 'o', 'x' }, 'ih', ':<C-U>Gitsigns select_hunk<CR>')
-        end
-      })
-    end
-  }
-
-  use 'tpope/vim-eunuch' -- wrappers UNIX commands
-  use 'tpope/vim-abolish'
-  use 'tpope/vim-unimpaired'
-  use 'tpope/vim-sleuth'
-
-  use { "ahmedkhalf/project.nvim",
-    config = function()
-      require("project_nvim").setup({
-        manual_mode = true,
-        show_hidden = false, -- TODO: Open issue to customize picker, etc. I want hidden files but not .git.
-        silent_chdir = false,
-      })
-    end
-  }
-
-  -- telescope
-  use { 'nvim-telescope/telescope.nvim',
-    requires = {
-      { 'nvim-lua/plenary.nvim' },
-      { 'nvim-telescope/telescope-github.nvim' },
-      { 'nvim-telescope/telescope-ghq.nvim' },
-      { 'echasnovski/mini.nvim' },
-      { 'tami5/sqlite.lua' },
-      { 'nvim-telescope/telescope-smart-history.nvim' },
-      { 'nvim-telescope/telescope-frecency.nvim' },
-      { 'ahmedkhalf/project.nvim' },
-      { 'nvim-telescope/telescope-ui-select.nvim' },
-      { 'nvim-telescope/telescope-file-browser.nvim' },
-      { 'nvim-telescope/telescope-packer.nvim' },
-      { 'tknightz/telescope-termfinder.nvim' },
-      { 'pwntester/octo.nvim' },
-    },
-
-    config = function()
-      local actions = {}
-      actions.smart_send_to_qflist = function(prompt_bufnr)
-        require('telescope.actions').smart_send_to_qflist(prompt_bufnr)
-        require('telescope.actions').open_qflist(prompt_bufnr)
-      end
-      actions.smart_add_to_qflist = function(prompt_bufnr)
-        require('telescope.actions').smart_add_to_qflist(prompt_bufnr)
-        require('telescope.actions').open_qflist(prompt_bufnr)
-      end
-
-      local telescope = require 'telescope'
-      telescope.setup {
-        defaults = {
-          file_sorter = require('mini.fuzzy').get_telescope_sorter,
-          generic_sorter = require('mini.fuzzy').get_telescope_sorter,
-          winblend = 0,
-          sorting_strategy = "descending",
-          layout_strategy = "vertical",
-          path_display = {
-            "smart",
-          },
-          cache_picker = {
-            num_pickers = 20,
-            limit_entries = 1000,
-          },
-          preview = {
-            hide_on_startup = false,
-          },
-          -- mappings = {
-          --   i = {
-          --     ["<M-q>"] = false,
-          --     ["<M-C-Q>"] = actions.smart_send_to_qflist,
-          --     ["<M-C-A>"] = actions.smart_add_to_qflist,
-          --   },
-          --   n = {
-          --     ["<M-q>"] = false,
-          --     ["<M-C-Q>"] = 'smart_send_to_qflist',
-          --     ["<M-C-A>"] = 'smart_add_to_qflist',
-          --   },
-          -- },
-        },
-        builtin = {
-          builtin = {
-            include_extensions = true,
-          },
-          oldfiles = {
-            only_cwd = true,
-          },
-        },
-        pickers = {
-          lsp_references = {
-            show_line = true,
-            trim_text = true,
-            fname_width = 80,
-          },
-        },
-        extensions = {
-          frecency = {
-            default_workspace = 'CWD',
-            ignore_patterns = {
-              '*.git/*',
-              '*.local/share/nvim/site/pack/*',
-              '*/vendor/*',
-            },
-            show_unindexed = false,
-          },
-          ["ui-select"] = {
-            require("telescope.themes").get_dropdown {},
-          },
-          undo = {
-            side_by_side = true,
-            layout_strategy = "vertical",
-            layout_config = {
-              preview_height = 0.8,
-            },
-          },
-        },
-      }
-
-      local extensions = {
-        'gh',
-        'ghq',
-        'frecency',
-        'projects',
-        'ui-select',
-        'file_browser',
-        'packer',
-        'termfinder',
-        'octo',
-      }
-
-      for _, extension in pairs(extensions) do
-        telescope.load_extension(extension)
-      end
-
-      vim.keymap.set('n', '<Leader><Space>', '<Cmd>Telescope<cr>')
-      vim.keymap.set('n', '<Leader>p', '<Cmd>Telescope projects<cr>')
-      vim.keymap.set('n', '<Leader>f', '<Cmd>Telescope frecency<cr>')
-      vim.keymap.set('n', '<Leader>o', '<Cmd>Telescope oldfiles<cr>')
-      vim.keymap.set('n', '<Leader>b', '<Cmd>Telescope buffers<cr>')
-      vim.keymap.set('n', '<Leader>t', '<Cmd>Telescope termfinder<cr>')
-      vim.keymap.set('n', '<Leader>gs', '<Cmd>Telescope git_status<cr>')
-      vim.keymap.set('n', '<Leader>gb', '<Cmd>Telescope git_branches<cr>')
-      vim.keymap.set('n', '<Leader>gc', '<Cmd>Telescope git_commits<cr>')
-      vim.keymap.set('n', '<Leader>gf', '<Cmd>Telescope git_files<cr>')
-    end
-  }
-
-  use { 'akinsho/toggleterm.nvim',
-    config = function()
-      require("toggleterm").setup {
-        auto_scroll = false,
-        persist_mode = true, -- if set to true the previous terminal mode will be remembered
-        shade_filetypes = { 'toggleterm' },
-        open_mapping = [[<M-Space>]],
-        hide_numbers = true, -- hide the number column in toggleterm buffers
-        shade_terminals = true, -- NOTE: this option takes priority over highlights specified so if you specify Normal highlights you should set this to false
-        close_on_exit = true, -- close the terminal window when the process exits
-        size = function(term)
-          if term.direction == "horizontal" then
-            return 40
-          elseif term.direction == "vertical" then
-            return vim.o.columns * 0.4
-          end
-        end,
-      }
-    end
-  }
-
-  use { 'pwntester/octo.nvim',
-    requires = {
-      'nvim-lua/plenary.nvim',
-      'nvim-telescope/telescope.nvim',
-      'kyazdani42/nvim-web-devicons',
-    },
-    config = function()
-      require "octo".setup()
-    end
-  }
-
-  use { 'echasnovski/mini.nvim',
-    branch = 'main',
-    requires = {
+  { 'echasnovski/mini.nvim',
+    module = false,
+    lazy = false,
+    version = false,
+    dependencies = {
       'lewis6991/gitsigns.nvim',
       'kyazdani42/nvim-web-devicons',
     },
@@ -468,26 +264,257 @@ return require('packer').startup({ function(use)
       })
       require 'mini.trailspace'.setup {}
     end
-  }
+  },
 
-  use { "folke/which-key.nvim",
+  { 'akinsho/toggleterm.nvim',
+    module = false,
+    lazy = false,
+    config = function()
+      require("toggleterm").setup {
+        auto_scroll = false,
+        persist_mode = true, -- if set to true the previous terminal mode will be remembered
+        shade_filetypes = { 'toggleterm' },
+        open_mapping = [[<M-Space>]],
+        hide_numbers = true, -- hide the number column in toggleterm buffers
+        shade_terminals = true, -- NOTE: this option takes priority over highlights specified so if you specify Normal highlights you should set this to false
+        close_on_exit = true, -- close the terminal window when the process exits
+        size = function(term)
+          if term.direction == "horizontal" then
+            return 40
+          elseif term.direction == "vertical" then
+            return vim.o.columns * 0.4
+          end
+        end,
+      }
+      local toggleterm = require'toggleterm'
+      local toggle_with_direction = function(direction)
+        return function()
+          toggleterm.toggle(vim.v.count, nil, nil, direction)
+        end
+      end
+      local opts = { noremap = true, silent = false }
+      vim.keymap.set({ "n", "t" }, [[�ñ]], toggle_with_direction(nil), opts) -- F1
+      vim.keymap.set({ "n", "t" }, [[�ò]], toggle_with_direction("float"), opts) -- F2
+    end
+  },
+
+  { 'samjwill/nvim-unception' },
+
+  { 'crispgm/nvim-go',
+    dependencies = {
+      'nvim-lua/plenary.nvim',
+    },
+    config = function()
+      require('go').setup {
+        auto_lint = true,
+        lint_prompt_style = 'vt',
+      }
+    end
+  },
+
+  { 'folke/neodev.nvim' },
+
+  { 'lewis6991/gitsigns.nvim',
+    dependencies = { 'nvim-lua/plenary.nvim' },
+    config = function()
+      require('gitsigns').setup({
+        current_line_blame = false,
+        signcolumn         = false, -- Toggle with `:Gitsigns toggle_signs`
+        numhl              = true, -- Toggle with `:Gitsigns toggle_numhl`
+        linehl             = false, -- Toggle with `:Gitsigns toggle_linehl`
+        word_diff          = false, -- Toggle with `:Gitsigns toggle_word_diff`
+        on_attach          = function(bufnr)
+          local gs = package.loaded.gitsigns
+
+          local function map(mode, l, r, opts)
+            opts = opts or {}
+            opts.buffer = bufnr
+            vim.keymap.set(mode, l, r, opts)
+          end
+
+          -- Navigation
+          map('n', ']c', function()
+            if vim.wo.diff then return ']c' end
+            vim.schedule(function() gs.next_hunk() end)
+            return '<Ignore>'
+          end, { expr = true })
+
+          map('n', '[c', function()
+            if vim.wo.diff then return '[c' end
+            vim.schedule(function() gs.prev_hunk() end)
+            return '<Ignore>'
+          end, { expr = true })
+
+          -- Text object
+          map({ 'o', 'x' }, 'ih', ':<C-U>Gitsigns select_hunk<CR>')
+        end
+      })
+    end
+  },
+
+  { 'tpope/vim-eunuch' }, -- wrappers UNIX commands
+  { 'tpope/vim-abolish' },
+  { 'tpope/vim-unimpaired' },
+  { 'tpope/vim-sleuth' },
+
+  { "ahmedkhalf/project.nvim",
+    config = function()
+      require("project_nvim").setup({
+        manual_mode = true,
+        show_hidden = false, -- TODO: Open issue to customize picker, etc. I want hidden files but not .git.
+        silent_chdir = false,
+      })
+    end
+  },
+
+  -- telescope
+  { 'nvim-telescope/telescope.nvim',
+    dependencies = {
+      { 'nvim-lua/plenary.nvim' },
+      { 'nvim-telescope/telescope-github.nvim' },
+      { 'nvim-telescope/telescope-ghq.nvim' },
+      { 'echasnovski/mini.nvim' },
+      { 'tami5/sqlite.lua' },
+      { 'nvim-telescope/telescope-smart-history.nvim' },
+      { 'nvim-telescope/telescope-frecency.nvim' },
+      { 'ahmedkhalf/project.nvim' },
+      { 'nvim-telescope/telescope-ui-select.nvim' },
+      { 'nvim-telescope/telescope-file-browser.nvim' },
+      { 'tknightz/telescope-termfinder.nvim' },
+      { 'pwntester/octo.nvim' },
+    },
+
+    config = function()
+      local actions = {}
+      actions.smart_send_to_qflist = function(prompt_bufnr)
+        require('telescope.actions').smart_send_to_qflist(prompt_bufnr)
+        require('telescope.actions').open_qflist(prompt_bufnr)
+      end
+      actions.smart_add_to_qflist = function(prompt_bufnr)
+        require('telescope.actions').smart_add_to_qflist(prompt_bufnr)
+        require('telescope.actions').open_qflist(prompt_bufnr)
+      end
+
+      local telescope = require 'telescope'
+      telescope.setup {
+        defaults = {
+          file_sorter = require('mini.fuzzy').get_telescope_sorter,
+          generic_sorter = require('mini.fuzzy').get_telescope_sorter,
+          winblend = 0,
+          sorting_strategy = "descending",
+          layout_strategy = "vertical",
+          path_display = {
+            "smart",
+          },
+          cache_picker = {
+            num_pickers = 20,
+            limit_entries = 1000,
+          },
+          preview = {
+            hide_on_startup = false,
+          },
+          -- mappings = {
+          --   i = {
+          --     ["<M-q>"] = false,
+          --     ["<M-C-Q>"] = actions.smart_send_to_qflist,
+          --     ["<M-C-A>"] = actions.smart_add_to_qflist,
+          --   },
+          --   n = {
+          --     ["<M-q>"] = false,
+          --     ["<M-C-Q>"] = 'smart_send_to_qflist',
+          --     ["<M-C-A>"] = 'smart_add_to_qflist',
+          --   },
+          -- },
+        },
+        builtin = {
+          builtin = {
+            include_extensions = true,
+          },
+          oldfiles = {
+            only_cwd = true,
+          },
+        },
+        pickers = {
+          lsp_references = {
+            show_line = true,
+            trim_text = true,
+            fname_width = 80,
+          },
+        },
+        extensions = {
+          frecency = {
+            default_workspace = 'CWD',
+            ignore_patterns = {
+              '*.git/*',
+              '*/vendor/*',
+            },
+            show_unindexed = false,
+          },
+          ["ui-select"] = {
+            require("telescope.themes").get_dropdown {},
+          },
+          undo = {
+            side_by_side = true,
+            layout_strategy = "vertical",
+            layout_config = {
+              preview_height = 0.8,
+            },
+          },
+        },
+      }
+
+      local extensions = {
+        'gh',
+        'ghq',
+        'frecency',
+        'projects',
+        'ui-select',
+        'file_browser',
+        'termfinder',
+        'octo',
+      }
+
+      for _, extension in pairs(extensions) do
+        telescope.load_extension(extension)
+      end
+
+      vim.keymap.set('n', '<Leader><Space>', '<Cmd>Telescope<cr>')
+      vim.keymap.set('n', '<Leader>p', '<Cmd>Telescope projects<cr>')
+      vim.keymap.set('n', '<Leader>f', '<Cmd>Telescope frecency<cr>')
+      vim.keymap.set('n', '<Leader>o', '<Cmd>Telescope oldfiles<cr>')
+      vim.keymap.set('n', '<Leader>b', '<Cmd>Telescope buffers<cr>')
+      vim.keymap.set('n', '<Leader>t', '<Cmd>Telescope termfinder<cr>')
+      vim.keymap.set('n', '<Leader>gs', '<Cmd>Telescope git_status<cr>')
+      vim.keymap.set('n', '<Leader>gb', '<Cmd>Telescope git_branches<cr>')
+      vim.keymap.set('n', '<Leader>gc', '<Cmd>Telescope git_commits<cr>')
+      vim.keymap.set('n', '<Leader>gf', '<Cmd>Telescope git_files<cr>')
+    end
+  },
+
+  { 'pwntester/octo.nvim',
+    dependencies = {
+      'nvim-lua/plenary.nvim',
+      'nvim-telescope/telescope.nvim',
+      'kyazdani42/nvim-web-devicons',
+    },
+    config = function()
+      require "octo".setup()
+    end
+  },
+
+  { "folke/which-key.nvim",
     config = function()
       require("which-key").setup {
       }
     end
-  }
+  },
 
-  use { 'debugloop/telescope-undo.nvim',
-    requires = { 'nvim-telescope/telescope.nvim' },
+  { 'debugloop/telescope-undo.nvim',
+    dependencies = { 'nvim-telescope/telescope.nvim' },
     config = function()
       require("telescope").load_extension("undo")
     end,
-  }
-
-end,
-  config = {
-    display = {
-      open_fn = require('packer.util').float,
-    },
   },
-})
+}
+
+require("lazy").setup(plugins)

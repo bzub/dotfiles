@@ -150,14 +150,6 @@ vim.keymap.set("n", [[�9]], msg_fn("YOU PRESSED: CustomKey #9"), opts)
 vim.keymap.set("t", [[�d]], [[]], opts)
 
 -- Toggles terminal
-local toggleterm = require'toggleterm'
-local toggle_with_direction = function(direction)
-  return function()
-    toggleterm.toggle(vim.v.count, nil, nil, direction)
-  end
-end
-vim.keymap.set({ "n", "t" }, [[�ñ]], toggle_with_direction(nil), opts) -- F1
-vim.keymap.set({ "n", "t" }, [[�ò]], toggle_with_direction("float"), opts) -- F2
 vim.keymap.set("n", [[�ó]], msg_fn("YOU PRESSED: CustomKey #F3"), opts)
 vim.keymap.set("n", [[�ô]], msg_fn("YOU PRESSED: CustomKey #F4"), opts)
 vim.keymap.set("n", [[�õ]], msg_fn("YOU PRESSED: CustomKey #F5"), opts)
