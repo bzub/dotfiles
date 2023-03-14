@@ -22,15 +22,18 @@ font:
 draw_bold_text_with_bright_colors: true
 selection:
   save_to_clipboard: true
+env:
+  PATH: /opt/homebrew/bin:/opt/homebrew/sbin:/usr/bin:/bin:/usr/sbin:/sbin
+  SHELL: /opt/homebrew/bin/zsh
 shell:
-  program: /usr/local/bin/abduco
+  program: /opt/homebrew/bin/abduco
   args:
     - -f
     - -A
     - -e
     - ˝
     - main
-    - /usr/local/bin/nvim
+    - /opt/homebrew/bin/nvim
     - -V1
     - --listen
     - ${HOME}/.cache/nvim/server.pipe

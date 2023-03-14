@@ -1,7 +1,7 @@
 #!/usr/bin/env zsh
 
 source "${HOME}/.secret-rc.sh"
-source /usr/local/opt/antidote/share/antidote/antidote.zsh
+source /opt/homebrew/share/antidote/antidote.zsh
 antidote load
 
 cache_dir="/tmp/zsh_source_cache"
@@ -32,14 +32,14 @@ for tool in kubectl kpt talosctl; do
   fi
 done
 
-if [ -f "/usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/path.zsh.inc" ]; then
-  source '/usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/path.zsh.inc'
-  source '/usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/completion.zsh.inc'
+if [ -f "/opt/homebrew/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/path.zsh.inc" ]; then
+  source '/opt/homebrew/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/path.zsh.inc'
+  source '/opt/homebrew/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/completion.zsh.inc'
 fi
 
 if [ $commands[fzf] ]; then
-  source /usr/local/opt/fzf/shell/completion.zsh
-  source /usr/local/opt/fzf/shell/key-bindings.zsh
+  source /opt/homebrew/opt/fzf/shell/completion.zsh
+  source /opt/homebrew/opt/fzf/shell/key-bindings.zsh
 fi
 
 if [ $commands[gh] ]; then
@@ -65,3 +65,6 @@ export SAVEHIST=$HISTSIZE
 export USE_GKE_GCLOUD_AUTH_PLUGIN=True
 
 alias buildx='docker-buildx'
+alias sed='gsed'
+alias find='gfind'
+alias curl='/opt/homebrew/opt/curl/bin/curl'
