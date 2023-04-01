@@ -37,7 +37,6 @@ shell:
     - -V1
     - --listen
     - ${HOME}/.cache/nvim/server.pipe
-alt_send_esc: true
 mouse:
   hide_when_typing: true
 hints:
