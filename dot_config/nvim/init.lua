@@ -1,3 +1,6 @@
+local path = vim.env.PATH
+vim.env.PATH = vim.env.HOME .. "/go/bin:" .. path
+
 vim.g.loaded_gzip = 1
 vim.g.loaded_matchit = 1
 vim.g.loaded_matchparen = 1
