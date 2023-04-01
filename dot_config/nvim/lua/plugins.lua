@@ -490,6 +490,9 @@ local plugins = {
   },
 
   { 'pwntester/octo.nvim',
+    module = false,
+    lazy = false,
+    version = false,
     dependencies = {
       'nvim-lua/plenary.nvim',
       'nvim-telescope/telescope.nvim',
