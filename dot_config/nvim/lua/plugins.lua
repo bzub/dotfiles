@@ -111,7 +111,7 @@ local plugins = {
 
       -- Use a loop to conveniently call 'setup' on multiple servers and
       -- map buffer local keybindings when the language server attaches
-      local servers = { 'bashls', 'gopls', 'html', 'jsonls', 'marksman' }
+      local servers = { 'bashls', 'gopls', 'html', 'jsonls', 'marksman', 'golangci_lint_ls' }
       for _, lsp in pairs(servers) do
         require('lspconfig')[lsp].setup {
           on_attach = on_attach,
@@ -305,8 +305,9 @@ local plugins = {
     },
     config = function()
       require('go').setup {
-        auto_lint = true,
-        lint_prompt_style = 'vt',
+        auto_lint = false,
+        formatter = "lsp",
+        maintain_cursor_pos = true,
       }
     end
   },
