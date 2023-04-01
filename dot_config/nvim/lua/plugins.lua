@@ -75,6 +75,9 @@ local plugins = {
   { 'neovim/nvim-lspconfig',
     module = false,
     lazy = false,
+    dependencies = {
+      'folke/neodev.nvim',
+    },
     config = function()
       -- Mappings.
       -- See `:help vim.diagnostic.*` for documentation on any of the below functions
@@ -111,7 +114,7 @@ local plugins = {
 
       -- Use a loop to conveniently call 'setup' on multiple servers and
       -- map buffer local keybindings when the language server attaches
-      local servers = { 'bashls', 'gopls', 'html', 'jsonls', 'marksman', 'golangci_lint_ls' }
+      local servers = { 'gopls', 'bashls', 'html', 'jsonls', 'marksman', 'golangci_lint_ls' }
       for _, lsp in pairs(servers) do
         require('lspconfig')[lsp].setup {
           on_attach = on_attach,
@@ -147,17 +150,9 @@ local plugins = {
         on_attach = on_attach,
         settings = {
           Lua = {
-            runtime = {
-              -- Tell the language server which version of Lua you're using (most likely LuaJIT in the case of Neovim)
-              version = 'LuaJIT',
-            },
             diagnostics = {
               -- Get the language server to recognize the `vim` global
               globals = { 'vim' },
-            },
-            workspace = {
-              -- Make the server aware of Neovim runtime files
-              library = vim.api.nvim_get_runtime_file("", true),
             },
             -- Do not send telemetry data containing a randomized but unique identifier
             telemetry = {
@@ -299,17 +294,18 @@ local plugins = {
 
   { 'samjwill/nvim-unception' },
 
-  { 'crispgm/nvim-go',
-    dependencies = {
-      'nvim-lua/plenary.nvim',
+  { "ray-x/go.nvim",
+    dependencies = {  -- optional packages
+      -- "ray-x/guihua.lua",
+      "neovim/nvim-lspconfig",
+      "nvim-treesitter/nvim-treesitter",
     },
     config = function()
-      require('go').setup {
-        auto_lint = false,
-        formatter = "lsp",
-        maintain_cursor_pos = true,
-      }
-    end
+      require("go").setup()
+    end,
+    event = {"CmdlineEnter"},
+    ft = {"go", 'gomod'},
+    build = ':lua require("go.install").update_all_sync()' -- if you need to install/update all binaries
   },
 
   { 'folke/neodev.nvim' },
