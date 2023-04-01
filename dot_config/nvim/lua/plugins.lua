@@ -380,7 +380,6 @@ local plugins = {
       { 'ahmedkhalf/project.nvim' },
       { 'nvim-telescope/telescope-ui-select.nvim' },
       { 'nvim-telescope/telescope-file-browser.nvim' },
-      { 'tknightz/telescope-termfinder.nvim' },
       { 'pwntester/octo.nvim' },
     },
 
@@ -470,7 +469,6 @@ local plugins = {
         'projects',
         'ui-select',
         'file_browser',
-        'termfinder',
         'octo',
       }
 
@@ -480,10 +478,10 @@ local plugins = {
 
       vim.keymap.set('n', '<Leader><Space>', '<Cmd>Telescope<cr>')
       vim.keymap.set('n', '<Leader>p', '<Cmd>Telescope projects<cr>')
-      vim.keymap.set('n', '<Leader>f', '<Cmd>Telescope frecency<cr>')
+      vim.keymap.set('n', '<Leader>ff', '<Cmd>Telescope frecency<cr>')
+      vim.keymap.set('n', '<Leader>fb', '<Cmd>Telescope file_browser<cr>')
       vim.keymap.set('n', '<Leader>o', '<Cmd>Telescope oldfiles<cr>')
       vim.keymap.set('n', '<Leader>b', '<Cmd>Telescope buffers<cr>')
-      vim.keymap.set('n', '<Leader>t', '<Cmd>Telescope termfinder<cr>')
       vim.keymap.set('n', '<Leader>gs', '<Cmd>Telescope git_status<cr>')
       vim.keymap.set('n', '<Leader>gb', '<Cmd>Telescope git_branches<cr>')
       vim.keymap.set('n', '<Leader>gc', '<Cmd>Telescope git_commits<cr>')
