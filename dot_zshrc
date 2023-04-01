@@ -63,6 +63,7 @@ export HOMEBREW_NO_ENV_HINTS="true"
 export HISTSIZE=999999999
 export SAVEHIST=$HISTSIZE
 export USE_GKE_GCLOUD_AUTH_PLUGIN=True
+export PATH="${HOME}/go/bin:${PATH}"
 
 alias buildx='docker-buildx'
 alias sed='gsed'
