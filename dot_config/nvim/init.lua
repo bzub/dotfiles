@@ -16,8 +16,8 @@ vim.o.termguicolors = true
 vim.o.background = "dark"
 
 local hl = function(group, opts)
-    opts.default = true
-    vim.api.nvim_set_hl(0, group, opts)
+    -- opts.default = true
+    -- vim.api.nvim_set_hl(0, group, opts)
 end
 
 -- Misc {{{
@@ -129,4 +129,8 @@ hl('@tag.delimiter', { link = 'Delimiter' })
 require('settings')
 require('plugins')
 
-vim.cmd([[colorscheme base16-gruvbox-material-dark-medium]])
+-- vim.cmd([[colorscheme base16-gruvbox-material-dark-medium]])
+-- vim.cmd([[colorscheme gruvbox]])
+
+vim.g.gruvbox_material_enable_bold = true
+vim.cmd([[colorscheme gruvbox-material]])
