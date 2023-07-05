@@ -15,6 +15,7 @@ vim.o.number = true
 vim.o.mouse = ""
 vim.o.cmdheight = 0
 vim.o.wildmode = "longest:full,full,lastused:full"
+vim.o.signcolumn = 'number'
 
 -- vim.o.writebackup = true --  protect against crash-during-write
 -- vim.o.nobackup = true --  but do not persist backup after successful write
