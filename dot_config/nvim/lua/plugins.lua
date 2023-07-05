@@ -12,6 +12,23 @@ end
 vim.opt.rtp:prepend(lazypath)
 
 local plugins = {
+  -- { 'crispgm/nvim-go',
+  --   dependencies = {
+  --     'nvim-lua/plenary.nvim',
+  --   },
+  --   ft = {
+  --     'go',
+  --   },
+  --   version = false,
+  --   config = function()
+  --     require("go").setup({
+  --       auto_lint = false,
+  --       maintain_cursor_pos = false,
+  --       formatter = 'lsp',
+  --     })
+  --   end
+  -- },
+
   { 'williamboman/mason.nvim',
     module = false,
     lazy = false,
@@ -114,12 +131,30 @@ local plugins = {
 
       -- Use a loop to conveniently call 'setup' on multiple servers and
       -- map buffer local keybindings when the language server attaches
-      local servers = { 'gopls', 'bashls', 'html', 'jsonls', 'marksman', 'golangci_lint_ls' }
+      local servers = { 'bashls', 'html', 'jsonls', 'marksman', 'golangci_lint_ls' }
       for _, lsp in pairs(servers) do
         require('lspconfig')[lsp].setup {
           on_attach = on_attach,
         }
       end
+
+      require 'lspconfig'.gopls.setup {
+        on_attach = on_attach,
+        settings = {
+          gopls = {
+            gofumpt = true,
+            usePlaceholders = true,
+            -- hoverKind = 'Structured',
+          },
+        },
+      }
+
+      -- vim.api.nvim_create_autocmd('BufWritePre', {
+      --   pattern = '*.go',
+      --   callback = function()
+      --     vim.lsp.buf.code_action({ context = { only = { 'source.organizeImports' } }, apply = true })
+      --   end
+      -- })
 
       -- yaml
       require 'lspconfig'.yamlls.setup {
@@ -294,19 +329,19 @@ local plugins = {
 
   { 'samjwill/nvim-unception' },
 
-  { "ray-x/go.nvim",
-    dependencies = {  -- optional packages
-      -- "ray-x/guihua.lua",
-      "neovim/nvim-lspconfig",
-      "nvim-treesitter/nvim-treesitter",
-    },
-    config = function()
-      require("go").setup()
-    end,
-    event = {"CmdlineEnter"},
-    ft = {"go", 'gomod'},
-    build = ':lua require("go.install").update_all_sync()' -- if you need to install/update all binaries
-  },
+  -- { "ray-x/go.nvim",
+  --   dependencies = {  -- optional packages
+  --     "ray-x/guihua.lua",
+  --     "neovim/nvim-lspconfig",
+  --     "nvim-treesitter/nvim-treesitter",
+  --   },
+  --   config = function()
+  --     require("go").setup()
+  --   end,
+  --   event = {"CmdlineEnter"},
+  --   ft = {"go", 'gomod'},
+  --   build = ':lua require("go.install").update_all_sync()' -- if you need to install/update all binaries
+  -- },
 
   { 'folke/neodev.nvim' },
 
